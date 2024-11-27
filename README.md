@@ -1,4 +1,4 @@
-![image](https://github.com/user-attachments/assets/188ced6d-3727-4316-9b94-6694adddceec)# waveshare-7
+# waveshare-7
 Waveshare ESP32 N8R8 LCD 7''
 
 This is not for everyone, it's optimized for personal use, but a source I share to refer to.
