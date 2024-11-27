@@ -1,11 +1,11 @@
 substitutions:
   board: esp32-s3-devkitc-1
-  name: "dash-board-lv"
-  device_description: Dash Board for Living 124
+  name: "waveshare-esp32-s3-lcd-7"
+  device_description: Waveshare ESP32 S3 LCD 7'
   type: esp-idf
   s_ip: # Your device Static IP      
-  latitude: ""    # 집의 위도
-  longitude: ""   # 집의 경도  
+  latitude: ""    
+  longitude: ""  
   weather_characters: " !#%'()+,-./0123456789:;<>?@ABCDEFGHIJKLMNOPQRSTUVWYZ[]_abcdefghijklmnopqrstuvwxyz{|}°²³µ맑음흐림대체로비뇌우안개폭호구름많동서남북알수없매좋높보통쾌적나쁨최악시눈내위험자외오존미세초먼지선월화목금토일풍데이터습도실온단양아조감건함주어제다낮요"
   allowed_characters: " !#%'()+,-./0123456789:;<>?@ABCDEFGHIJKLMNOPQRSTUVWYZ[]_abcdefghijklmnopqrstuvwxyz{|}°²³µ실내외거서재주방다용도화장안베란우좌측전체에어컨가습창문생시볼륨로비간접보조블라인드현설버티컬온관중등냉고송명자러수동난풍제꺼짐강약정기날씨디오메뉴너지소량사월당태양광발모일통계단남은필터취침켜공청닫힘열림면밝대절복귀출점스플레이식패턴하브리환"
   title_characters: " !#%'()+,-./0123456789:;<>?@ABCDEFGHIJKLMNOPQRSTUVWYZ[]_abcdefghijklmnopqrstuvwxyz{|}오전후일월화수목금토"
