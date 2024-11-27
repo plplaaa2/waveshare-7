@@ -13,3 +13,5 @@ Please refer to the link below except base and hw setting.
 https://github.com/plplaaa2/esphome-lvgl-480
 
 This is a sample image.
+
+https://www.youtube.com/shorts/WfNRwrhKC6Q?feature=share
