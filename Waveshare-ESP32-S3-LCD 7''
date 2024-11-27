@@ -1,0 +1,300 @@
+substitutions:
+  board: esp32-s3-devkitc-1
+  name: "dash-board-lv"
+  device_description: Dash Board for Living 124
+  type: esp-idf
+  s_ip: # Your device Static IP      
+  latitude: ""    # 집의 위도
+  longitude: ""   # 집의 경도  
+  weather_characters: " !#%'()+,-./0123456789:;<>?@ABCDEFGHIJKLMNOPQRSTUVWYZ[]_abcdefghijklmnopqrstuvwxyz{|}°²³µ맑음흐림대체로비뇌우안개폭호구름많동서남북알수없매좋높보통쾌적나쁨최악시눈내위험자외오존미세초먼지선월화목금토일풍데이터습도실온단양아조감건함주어제다낮요"
+  allowed_characters: " !#%'()+,-./0123456789:;<>?@ABCDEFGHIJKLMNOPQRSTUVWYZ[]_abcdefghijklmnopqrstuvwxyz{|}°²³µ실내외거서재주방다용도화장안베란우좌측전체에어컨가습창문생시볼륨로비간접보조블라인드현설버티컬온관중등냉고송명자러수동난풍제꺼짐강약정기날씨디오메뉴너지소량사월당태양광발모일통계단남은필터취침켜공청닫힘열림면밝대절복귀출점스플레이식패턴하브리환"
+  title_characters: " !#%'()+,-./0123456789:;<>?@ABCDEFGHIJKLMNOPQRSTUVWYZ[]_abcdefghijklmnopqrstuvwxyz{|}오전후일월화수목금토"
+
+esp32:
+  flash_size: 8MB
+  partitions: "default_8MB.csv"
+  
+i2c:
+  scl: GPIO9
+  sda: GPIO8
+  scan: True
+
+#uart:
+ # tx_pin: GPIO43
+  #rx_pin: GPIO44
+  #baud_rate: 9600
+
+packages:
+  # base
+  base: !include base-800.yaml
+  display: !include waveshare-800.yaml
+  font: !include fonts-800.yaml
+  image: !include weather-icon.yaml
+  # lvgl  
+  style: !include styles-800.yaml  
+  # sensors  
+  naver: !include naver-800.yaml
+  indoor: !include indoor-800.yaml
+  outside: !include outdoor-800.yaml
+  energy: !include energy-800.yaml
+  # device sensors
+  switch: !include switch-800.yaml
+  aircon: !include aircon-800.yaml
+  humidfier: !include humidifier-800.yaml
+  purifier: !include purifier-800.yaml
+  door: !include door-800.yaml  
+  blind: !include blind-800.yaml  
+  # pages
+  menu-page: !include menu-page-800.yaml
+  weather-page: !include weather-page-800.yaml
+  light-page: !include light-page-800.yaml
+  climate-page: !include climate-page-800.yaml
+  security-page: !include security-page-800.yaml
+  energy-page: !include energy-page-800.yaml
+  setting-page: !include setting-page-800.yaml
+
+udp:
+
+script:
+# Time update  
+  - id: time_update
+    then:
+      - lvgl.label.update:
+          id: title_time
+
+          text: !lambda |-
+            static char time_buf[17];
+            auto now = id(time_comp).now();
+            bool is_pm = now.hour >= 12;
+            int hour_12 = now.hour % 12;
+            if (hour_12 == 0) {
+                hour_12 = 12; // 12 AM/PM should be displayed as 12, not 0
+            }
+            snprintf(time_buf, sizeof(time_buf), "%s %2d:%02d", is_pm ? "오후" : "오전", hour_12, now.minute );
+            return time_buf;      
+
+  - id: date_update
+    then:
+      - lvgl.label.update:
+          id: title_date
+          text: !lambda |-
+            static char date_buf[30];
+            auto now = id(time_comp).now();
+            const char* weekdays[] = {"일", "월", "화", "수", "목", "금", "토"};
+            snprintf(date_buf, sizeof(date_buf), "%04d-%02d-%02d (%s)", now.year, now.month, now.day_of_month, weekdays[now.day_of_week - 1]);
+            return date_buf;
+
+  - id: hybrid_heating
+    mode: queued
+    then:
+      - while:
+          condition:
+            - lambda: 'return id(temperature_indoor).state <= id(boiler).target_temperature + 1;'
+          then:
+            - if:
+                condition:
+                  - lambda: 'return id(return_pipe).state <= id(return_pipe_temp).state;'
+                then:
+                  - switch.turn_on: heater
+                  - delay: 10min
+                  - switch.turn_off: heater
+                  - delay: 20min
+                else:
+                  - delay: 5min
+
+  - id: pattern_heating
+    mode: queued
+    then:
+      - while:
+          condition:
+            - lambda: 'return id(temperature_indoor).state <= id(boiler).target_temperature;'
+          then:
+            - if:
+                condition:
+                  - lambda: 'return id(return_pipe).state <= id(return_pipe_temp).state;'
+                then:
+                  - switch.turn_on: heater
+                  - delay: 10min
+                  - switch.turn_off: heater
+                  - delay: 20min
+                else:
+                  - delay: 5min
+
+switch:
+# 백라이트
+#  - platform: gpio
+#    name: "${name}Backlight Switch"
+#    id: Backlight_sw
+#    pin: 
+#      ch422g: io_ex
+#      number: 2         
+
+number:
+# dispaly setting  
+  - platform: template
+    name: "${name} Screen Return Time"
+    optimistic: true
+    id: return_timeout
+    unit_of_measurement: "s"
+    initial_value: 30
+    restore_value: true    
+    min_value: 10
+    max_value: 300
+    step: 5
+    mode: box
+
+  - platform: template
+    name: "${name} LCD Screen Timeout"
+    optimistic: true
+    id: screen_timeout
+    unit_of_measurement: "s"
+    initial_value: 300
+    restore_value: true    
+    min_value: 10
+    max_value: 300
+    step: 5
+    mode: box
+
+  - platform: template
+    name: "${name} BackLight Brightness"
+    optimistic: true
+    id: backlight_brightness   
+    unit_of_measurement: "%"
+    initial_value: 50
+    restore_value: true
+    min_value: 5
+    max_value: 100
+    step: 5
+    mode: box
+    on_value: 
+      then:
+        lvgl.slider.update: 
+          id: slide_brightness
+          value: !lambda return x;
+
+  - platform: template
+    name: "${name} Return Pipe Temperature"
+    optimistic: true
+    id: return_pipe_temp
+    device_class: temperature  
+    unit_of_measurement: "℃"
+    initial_value: 25
+    restore_value: true
+    min_value: 30
+    max_value: 50
+    step: 1
+    mode: box
+
+# LVGL CORE
+lvgl:
+# 기본 스타일  
+  bg_color: 0
+  text_font: regular_25
+  align: center
+  on_idle:
+    - timeout: !lambda return id(return_timeout).state * 1000;
+      then:
+        if: 
+          condition:
+            - light.is_on: backlight
+          then:
+            - lvgl.page.show: weather_page
+    - timeout: !lambda return id(screen_timeout).state * 1000;
+      then:
+        if:
+          condition:
+            and:
+              - light.is_on: backlight
+              - binary_sensor.is_off: presence_sensor
+          then:
+            - light.turn_off: backlight
+# 상단 타이틀
+  top_layer:
+    widgets: 
+      - obj:
+          x: 0
+          y: 0
+          width: 800
+          height: 30
+          styles : title_bar
+          widgets:
+            - obj:
+                width: 350
+                height: 28
+                styles : title_bar
+                align: TOP_LEFT
+                layout:
+                  type: FLEX
+                  flex_flow: ROW
+                  flex_align_main: START
+                widgets:                  
+                  - label:
+                      text: "오전 00:00"
+                      id: title_time
+                      align: TOP_LEFT
+                      text_align: left
+                  - label:
+                      text: "\U000F001B"
+                      id: aircon_run
+                      hidden: true
+                      align: TOP_RIGHT
+                      text_align: right
+                  - label:
+                      text: "\U000F0F92"
+                      id: boiler_run
+                      hidden: true
+                      align: TOP_RIGHT
+                      text_align: right
+                  - label:
+                      text: "\U000F1099"
+                      id: humidifier_run
+                      hidden: true
+                      align: TOP_RIGHT
+                      text_align: right
+                  - label:
+                      text: "\U000F0D44"
+                      id: purifier_run
+                      hidden: true
+                      align: TOP_RIGHT
+                      text_align: right
+                  
+            - label:
+                text: "2000-00-00(일)"
+                id: title_date
+                align: TOP_MID
+                x: 0
+                y: 2
+                text_align: CENTER
+            - obj:
+                width: 350
+                height: 28
+                styles : title_bar
+                align: TOP_RIGHT
+                layout:
+                  type: FLEX
+                  flex_flow: ROW
+                  flex_align_main: END
+                widgets:
+                  - label:
+                      text: "\U000F192C 0 W"
+                      id: energy_meter_power_title
+                      align: TOP_RIGHT 
+                      text_align: right
+                  - label:
+                      text: "\U000F1A73 0 W"
+                      id: solar_power_title
+                      align: TOP_RIGHT             
+                      text_align: right
+                  - label:
+                      text: "\U000F05A9"
+                      id: wifi_connected
+                      hidden: true
+                      align: TOP_RIGHT               
+                      text_align: right
+                  - label:
+                      text: "\U000F16C5"
+                      id: wifi_disconnected                
+                      align: TOP_RIGHT
+                      text_align: right
+
+                
