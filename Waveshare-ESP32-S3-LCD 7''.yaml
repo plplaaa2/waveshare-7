@@ -28,32 +28,6 @@ packages:
   # base
   base: !include base-800.yaml
   display: !include waveshare-800.yaml
-  font: !include fonts-800.yaml
-  image: !include weather-icon.yaml
-  # lvgl  
-  style: !include styles-800.yaml  
-  # sensors  
-  naver: !include naver-800.yaml
-  indoor: !include indoor-800.yaml
-  outside: !include outdoor-800.yaml
-  energy: !include energy-800.yaml
-  # device sensors
-  switch: !include switch-800.yaml
-  aircon: !include aircon-800.yaml
-  humidfier: !include humidifier-800.yaml
-  purifier: !include purifier-800.yaml
-  door: !include door-800.yaml  
-  blind: !include blind-800.yaml  
-  # pages
-  menu-page: !include menu-page-800.yaml
-  weather-page: !include weather-page-800.yaml
-  light-page: !include light-page-800.yaml
-  climate-page: !include climate-page-800.yaml
-  security-page: !include security-page-800.yaml
-  energy-page: !include energy-page-800.yaml
-  setting-page: !include setting-page-800.yaml
-
-udp:
 
 script:
 # Time update  
@@ -83,51 +57,6 @@ script:
             const char* weekdays[] = {"일", "월", "화", "수", "목", "금", "토"};
             snprintf(date_buf, sizeof(date_buf), "%04d-%02d-%02d (%s)", now.year, now.month, now.day_of_month, weekdays[now.day_of_week - 1]);
             return date_buf;
-
-  - id: hybrid_heating
-    mode: queued
-    then:
-      - while:
-          condition:
-            - lambda: 'return id(temperature_indoor).state <= id(boiler).target_temperature + 1;'
-          then:
-            - if:
-                condition:
-                  - lambda: 'return id(return_pipe).state <= id(return_pipe_temp).state;'
-                then:
-                  - switch.turn_on: heater
-                  - delay: 10min
-                  - switch.turn_off: heater
-                  - delay: 20min
-                else:
-                  - delay: 5min
-
-  - id: pattern_heating
-    mode: queued
-    then:
-      - while:
-          condition:
-            - lambda: 'return id(temperature_indoor).state <= id(boiler).target_temperature;'
-          then:
-            - if:
-                condition:
-                  - lambda: 'return id(return_pipe).state <= id(return_pipe_temp).state;'
-                then:
-                  - switch.turn_on: heater
-                  - delay: 10min
-                  - switch.turn_off: heater
-                  - delay: 20min
-                else:
-                  - delay: 5min
-
-switch:
-# 백라이트
-#  - platform: gpio
-#    name: "${name}Backlight Switch"
-#    id: Backlight_sw
-#    pin: 
-#      ch422g: io_ex
-#      number: 2         
 
 number:
 # dispaly setting  
@@ -172,25 +101,13 @@ number:
           id: slide_brightness
           value: !lambda return x;
 
-  - platform: template
-    name: "${name} Return Pipe Temperature"
-    optimistic: true
-    id: return_pipe_temp
-    device_class: temperature  
-    unit_of_measurement: "℃"
-    initial_value: 25
-    restore_value: true
-    min_value: 30
-    max_value: 50
-    step: 1
-    mode: box
-
 # LVGL CORE
 lvgl:
 # 기본 스타일  
   bg_color: 0
   text_font: regular_25
   align: center
+# Idle Action
   on_idle:
     - timeout: !lambda return id(return_timeout).state * 1000;
       then:
@@ -208,6 +125,7 @@ lvgl:
               - binary_sensor.is_off: presence_sensor
           then:
             - light.turn_off: backlight
+            
 # 상단 타이틀 (Do not package)
   top_layer:
     widgets: 
