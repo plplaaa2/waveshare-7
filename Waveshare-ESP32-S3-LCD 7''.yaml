@@ -208,7 +208,7 @@ lvgl:
               - binary_sensor.is_off: presence_sensor
           then:
             - light.turn_off: backlight
-# 상단 타이틀
+# 상단 타이틀 (Do not packaged)
   top_layer:
     widgets: 
       - obj:
