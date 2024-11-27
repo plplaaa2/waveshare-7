@@ -29,81 +29,9 @@ packages:
   base: !include base-800.yaml
   display: !include waveshare-800.yaml
 
-script:
-# Time update  
-  - id: time_update
-    then:
-      - lvgl.label.update:
-          id: title_time
-
-          text: !lambda |-
-            static char time_buf[17];
-            auto now = id(time_comp).now();
-            bool is_pm = now.hour >= 12;
-            int hour_12 = now.hour % 12;
-            if (hour_12 == 0) {
-                hour_12 = 12; // 12 AM/PM should be displayed as 12, not 0
-            }
-            snprintf(time_buf, sizeof(time_buf), "%s %2d:%02d", is_pm ? "오후" : "오전", hour_12, now.minute );
-            return time_buf;      
-
-  - id: date_update
-    then:
-      - lvgl.label.update:
-          id: title_date
-          text: !lambda |-
-            static char date_buf[30];
-            auto now = id(time_comp).now();
-            const char* weekdays[] = {"일", "월", "화", "수", "목", "금", "토"};
-            snprintf(date_buf, sizeof(date_buf), "%04d-%02d-%02d (%s)", now.year, now.month, now.day_of_month, weekdays[now.day_of_week - 1]);
-            return date_buf;
-
-number:
-# dispaly setting  
-  - platform: template
-    name: "${name} Screen Return Time"
-    optimistic: true
-    id: return_timeout
-    unit_of_measurement: "s"
-    initial_value: 30
-    restore_value: true    
-    min_value: 10
-    max_value: 300
-    step: 5
-    mode: box
-
-  - platform: template
-    name: "${name} LCD Screen Timeout"
-    optimistic: true
-    id: screen_timeout
-    unit_of_measurement: "s"
-    initial_value: 300
-    restore_value: true    
-    min_value: 10
-    max_value: 300
-    step: 5
-    mode: box
-
-  - platform: template
-    name: "${name} BackLight Brightness"
-    optimistic: true
-    id: backlight_brightness   
-    unit_of_measurement: "%"
-    initial_value: 50
-    restore_value: true
-    min_value: 5
-    max_value: 100
-    step: 5
-    mode: box
-    on_value: 
-      then:
-        lvgl.slider.update: 
-          id: slide_brightness
-          value: !lambda return x;
-
 # LVGL CORE
 lvgl:
-# 기본 스타일  
+# Default Style
   bg_color: 0
   text_font: regular_25
   align: center
