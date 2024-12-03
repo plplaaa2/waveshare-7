@@ -29,4 +29,4 @@ https://github.com/plplaaa2/esphome-lvgl-480
 
 The yaml file in this link is a yaml file modified to use the yaml file of the device shown in the original video of the shorts above for other devices (guition esp32 s3 480 4' display switch). Therefore, it can also be used for waveshare esp32 s3 LCD 7'. (as long as you modify some resolution)
 
-The reason I can't make this an open source is because my code is already over the 10000 line. I'm not a programmer, so I'm not confident of organizing this to the level of disclosure.
+The reason I can't make this an open source is because my code is already over the 10000 line. I'm not a programmer, so I'm not confident of organizing this to the level of disclosure. And even now, I'm still adding features, so I don't even have time to organize my code.
