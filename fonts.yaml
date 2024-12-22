@@ -1,3 +1,7 @@
+substitutions:
+  weather_characters: " !#%'()+,-./0123456789:;<>?@ABCDEFGHIJKLMNOPQRSTUVWYZ[]_abcdefghijklmnopqrstuvwxyz{|}°²³µ맑음흐림대체로비뇌우안개폭호구름많동서남북알수없매좋높보통쾌적나쁨최악시눈내위험자외오존미세초먼지선월화목금토일풍데이터습도실온단양아조감건함주어제다낮요"
+  allowed_characters: " !#%'()+,-./0123456789:;<>?@ABCDEFGHIJKLMNOPQRSTUVWYZ[]_abcdefghijklmnopqrstuvwxyz{|}°²³µ실내외거서재주방다용도화장안베란우좌측전체에어컨가습창문생시볼륨로비간접보조블라인드현설버티컬온관중등냉고송명자러수동난풍제꺼짐강약정기날씨디오메뉴너지소량사월당태양광발모일통계단남은필터취침켜공청닫힘열림면밝대절복귀출점스플레이식패턴하브리환"
+  title_characters: " !#%'()+,-./0123456789:;<>?@ABCDEFGHIJKLMNOPQRSTUVWYZ[]_abcdefghijklmnopqrstuvwxyz{|}오전후일월화수목금토"
 # 폰트 설정
 font:
   - file: "fonts/DroidSansHS.ttf"
