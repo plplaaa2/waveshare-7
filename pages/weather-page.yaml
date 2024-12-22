@@ -24,7 +24,7 @@ lvgl:
             x: 0
             y: 30
             align: TOP_LEFT
-            styles: home_style
+            styles: weather_style
             width: 800
             height: 450
             widgets:
@@ -219,7 +219,6 @@ lvgl:
             x: 195
             y: -5
             align: BOTTOM_LEFT
-            #hidden: true
             styles: weather_card
             width: 145
             height: 190
@@ -634,7 +633,6 @@ lvgl:
                   text_font: weather_20
                   text_color: 0xE5E5E5
                   text_align: CENTER
-
               - label:
                   x: 0
                   y: -10
@@ -643,31 +641,7 @@ lvgl:
                   text_font: weather_20
                   text_color: 0xE5E5E5
                   text_align: CENTER
-        - obj:          
-            width: 300
-            height: 300
-            styles: card
-            border_width: 10
-            border_color: 0x0000ff
-            border_opa: COVER
-            align: CENTER
-            hidden: true
-            id: rainy_start
-            widgets:
-              - image:
-                  y: 10
-                  align: TOP_MID
-                  styles: home_style
-                  src: rainy
-                
-              - label:
-                  y: -10              
-                  align: BOTTOM_MID
-                  styles: home_style
-                  text: "비 내림"
-                  text_font: weather_70
                   
-
         - button:
             x: 0
             y: 30
