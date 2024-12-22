@@ -15,7 +15,7 @@ esphome:
           
 esp32:
   board: ${board}
-  framework:
+  framework:  
     type: ${type}
     sdkconfig_options:
       COMPILER_OPTIMIZATION_SIZE: y
@@ -24,6 +24,8 @@ esp32:
       CONFIG_ESP32S3_DATA_CACHE_LINE_64B: "y"
       CONFIG_SPIRAM_FETCH_INSTRUCTIONS: y
       CONFIG_SPIRAM_RODATA: y   
+  flash_size: 8MB
+  partitions: "default_8MB.csv"
       
 psram:
   mode: octal
@@ -77,6 +79,28 @@ wifi:
     password: !secret hotspot_pw
 
 captive_portal:
+
+i2c:
+  scl: GPIO9
+  sda: GPIO8
+  scan: True
+
+#uart:
+ # tx_pin: GPIO43
+  #rx_pin: GPIO44
+  #baud_rate: 9600
+
+packages:
+  # base
+  base: !include base.yaml
+  display: !include display.yaml
+  fonts: !include fonts.yaml
+  top_layer: !include top_layer.yaml
+  #pages
+  menu: !include pages/menu.yaml
+  weather: !include pages/weather.yaml
+  climate: !include pages/climate.yaml
+  blind: !include pages/blind.yaml
 
 time:
   - platform: sntp
