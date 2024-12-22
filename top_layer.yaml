@@ -10,31 +10,6 @@ substitutions:
   allowed_characters: " !#%'()+,-./0123456789:;<>?@ABCDEFGHIJKLMNOPQRSTUVWYZ[]_abcdefghijklmnopqrstuvwxyz{|}°²³µ실내외거서재주방다용도화장안베란우좌측전체에어컨가습창문생시볼륨로비간접보조블라인드현설버티컬온관중등냉고송명자러수동난풍제꺼짐강약정기날씨디오메뉴너지소량사월당태양광발모일통계단남은필터취침켜공청닫힘열림면밝대절복귀출점스플레이식패턴하브리환"
   title_characters: " !#%'()+,-./0123456789:;<>?@ABCDEFGHIJKLMNOPQRSTUVWYZ[]_abcdefghijklmnopqrstuvwxyz{|}오전후일월화수목금토"
 
-esp32:
-  flash_size: 8MB
-  partitions: "default_8MB.csv"
-  
-i2c:
-  scl: GPIO9
-  sda: GPIO8
-  scan: True
-
-#uart:
- # tx_pin: GPIO43
-  #rx_pin: GPIO44
-  #baud_rate: 9600
-
-packages:
-  # base
-  base: !include base.yaml
-  display: !include display.yaml
-  fonts: !include fonts.yaml
-  #pages
-  menu: !include pages/menu.yaml
-  weather: !include pages/weather.yaml
-  climate: !include pages/climate.yaml
-  blind: !include pages/blind.yaml
-
 # LVGL CORE
 lvgl:
 # Default Style
