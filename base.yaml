@@ -1,3 +1,12 @@
+substitutions:
+  board: esp32-s3-devkitc-1
+  name: "waveshare-esp32-s3-lcd-7"
+  device_description: Waveshare ESP32 S3 LCD 7'
+  type: esp-idf
+  s_ip: # Your device Static IP      
+  latitude: ""    
+  longitude: ""  
+
 esphome:
   name: "${name}"
   comment: "${device_description}"
