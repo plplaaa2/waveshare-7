@@ -652,4 +652,4 @@ lvgl:
             height: 450
             on_press:
               then:
-                 #- lvgl.page.show: menu_page
+                 - lvgl.page.show: menu_page
