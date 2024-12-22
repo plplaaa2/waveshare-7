@@ -104,7 +104,7 @@ packages:
   base: !include base.yaml
   display: !include display.yaml
   fonts: !include fonts.yaml
-  top_layer: !include top_layer.yaml
+  lvgl: !include lvgl_base.yaml
   #pages
   menu: !include pages/menu.yaml
   weather: !include pages/weather.yaml
