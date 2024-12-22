@@ -74,7 +74,7 @@ lvgl:
                 styles: menu_button
                 outline_width: 1                
                 on_press:
-                  #- lvgl.page.show: weather_page
+                  - lvgl.page.show: weather_page
                 widgets:
                   - label:                                
                       align: TOP_MID
@@ -137,7 +137,7 @@ lvgl:
                 styles: menu_button
                 outline_width: 1
                 on_press:
-                  #- lvgl.page.show: blind_page
+                  - lvgl.page.show: blind_page
                 widgets:
                   - label:                                
                       align: TOP_MID
