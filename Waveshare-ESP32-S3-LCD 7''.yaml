@@ -26,8 +26,9 @@ i2c:
 
 packages:
   # base
-  base: !include base-800.yaml
-  display: !include waveshare-800.yaml
+  base: !include base.yaml
+  display: !include display.yaml
+  fonts: !include fonts.yaml
   #pages
   menu: !include pages/menu.yaml
   weather: !include pages/weather.yaml
