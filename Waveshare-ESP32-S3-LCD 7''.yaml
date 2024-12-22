@@ -28,6 +28,11 @@ packages:
   # base
   base: !include base-800.yaml
   display: !include waveshare-800.yaml
+  #pages
+  menu: !include pages/menu.yaml
+  weather: !include pages/weather.yaml
+  climate: !include pages/climate.yaml
+  blind: !include pages/blind.yaml
 
 # LVGL CORE
 lvgl:
