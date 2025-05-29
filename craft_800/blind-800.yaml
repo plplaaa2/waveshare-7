@@ -1,0 +1,36 @@
+sensor:
+# 블라인드 센서
+  - platform: homeassistant
+    entity_id: $blind 
+    attribute: current_position
+    id: current_position
+    on_value:
+      - lvgl.label.update:
+          id: blind_all_slider_number
+          text:
+            format: "%.0f%%"
+            args: [ 'x' ]
+      - lvgl.slider.update:
+          id: blind_all_slider
+          value: !lambda 'return x;'
+                
+text_sensor:
+# 블라인드 텍스트 센서
+  - platform: homeassistant
+    entity_id: $blind
+    id: blind
+    on_value:
+      - if:
+          condition:
+            - lambda: 'return id(blind).state == "closed";'
+          then:
+            - lvgl.label.update: 
+                id: blind_all_state
+                text: "Closed"
+      - if:
+          condition:
+            - lambda: 'return id(blind).state == "open";'
+          then:
+            - lvgl.label.update: 
+                id: blind_all_state
+                text: "Opened"

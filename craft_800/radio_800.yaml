@@ -1,0 +1,46 @@
+sensor:            
+#미디어 센서
+  - platform: homeassistant
+    entity_id: $media_player
+    name: $media_player
+    attribute: volume_level
+    id: media_player_volume
+    on_value:
+      - lvgl.label.update:
+          id: set_volume_text
+          text:
+            format: "Vol %.0f%%"
+            args: [ '(x * 100)' ]
+      - lvgl.slider.update:
+          id: set_volume
+          value: !lambda 'return (x * 100);'
+
+
+binary_sensor:
+#미디어 뮤트 센서
+  - platform: homeassistant
+    entity_id: $media_player
+    name: media_player_muted
+    attribute: is_volume_muted
+    id: media_player_is_volume_muted
+    on_state:
+      then:
+        if:
+          condition: 
+            - binary_sensor.is_off: media_player_is_volume_muted
+          then:
+            - lvgl.button.update:
+                id: media_player_mute
+                state:
+                  checked: false
+            - lvgl.label.update:
+                id: media_player_mute_icon
+                text: "\U000F0581"
+          else: 
+            - lvgl.button.update:
+                id: media_player_mute
+                state:
+                  checked: true
+            - lvgl.label.update:
+                id: media_player_mute_icon
+                text: "\U000F057E"

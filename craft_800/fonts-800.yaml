@@ -1,0 +1,146 @@
+# 폰트 설정
+font:
+  - file: "$font"
+    id: regular_20
+    size: 20
+    bpp: 4
+    glyphs: ${characters}
+    extras:
+      - file: 'fonts/materialdesignicons-webfont.ttf' # http://materialdesignicons.com/cdn/7.4.47/ 
+        glyphs: [
+          "\U000F054A", # mdi:umbrella
+          "\U000F17FF", # mdi:sun-wireless-outline
+          "\U000F0C16", # mdi:alpha-o-circle
+          "\U000F0765", # mdi:circle
+          "\U000F00B5", # mdi:blur
+          "\U000F00B6",  # mdi:blur-linear
+          "\U000F059C", # mdi:weather-sunset-up
+          "\U000F059B"  # mdi:weather-sunset-down
+          ]  
+  - file: "$font"
+    id: regular_25
+    size: 25
+    bpp: 4
+    glyphs: ${characters}
+    extras:
+      - file: 'fonts/materialdesignicons-webfont.ttf' # http://materialdesignicons.com/cdn/7.4.47/ 
+        glyphs: [
+          "\U000F1A79",  # mdi:sun-snowflake-variant
+          "\U000F0717",  # mdi:snowflake
+          "\U000F0238",  # mdi:fire
+          "\U000F058E",  # mdi:water-percent
+          "\U000F0210",  # mdi:fan
+          "\U000F171D",  # mdi:fan-auto
+          "\U000F1474",  # mdi:fan-speed-3
+          "\U000F1473",  # mdi:fan-speed-2
+          "\U000F1472",  # mdi:fan-speed-1
+          "\U000F0425"   # mdi:power
+          ]   
+  - file: "$font"
+    id: regular_40
+    size: 40
+    bpp: 4
+    glyphs: ${characters}     
+    extras:
+      - file: 'fonts/materialdesignicons-webfont.ttf' # http://materialdesignicons.com/cdn/7.4.47/ 
+        glyphs: [
+          "\U000F0F54",  # mdi:air-conditioner
+          "\U000F0F92",  # mdi:water-boiler
+          "\U000F0439",  # mdi:radio
+          "\U000F07AE",  # mdi:cctv
+          "\U000F1A57",  # mdi:meter-electric
+          "\U000F0493",  # mdi:cog
+          "\U000F040A",  # mdi:play
+          "\U000F03E4",  # mdi:pause
+          "\U000F04DB",  # mdi:stop
+          "\U000F075D",  # mdi:volume-plus
+          "\U000F075E",  # mdi:volume-minus
+          "\U000F0581",  # mdi:volume-off
+          "\U000F04AE",  # mdi:skip-previous
+          "\U000F04AD",  # mdi:skip-next
+          "\U000F0143",  # mdi:chevron-up
+          "\U000F0140",  # mdi:chevron-down
+          "\U000F1A2E",  # mdi:blinds-vertical-closed
+          "\U000F1A2D",  # mdi:blinds-vertical        
+          "\U000F084E",  # mdi:arrow-expand-horizontal
+          "\U000F084C"  # mdi:arrow-collapse-horizontal
+          ]   
+  - file: "$font"
+    id: weather_60
+    size: 60
+    bpp: 4
+    glyphs: ${characters}
+    extras:
+      - file: 'fonts/materialdesignicons-webfont.ttf' # http://materialdesignicons.com/cdn/7.4.47/ 
+        glyphs: [
+          "\U000F1A79",  # mdi:sun-snowflake-variant
+          "\U000F0717",  # mdi:snowflake
+          "\U000F0238",  # mdi:fire
+          "\U000F058E",  # mdi:water-percent
+          "\U000F0210",  # mdi:fan
+          "\U000F0425"   # mdi:power
+          ]
+  - file: "$font"
+    id: weather_30
+    size: 30
+    bpp: 4    
+    glyphs: ${characters}
+    extras:
+      - file: 'fonts/materialdesignicons-webfont.ttf' # http://materialdesignicons.com/cdn/7.4.47/ 
+        glyphs: [
+          "\U000F054A" # mdi:umbrella
+          ]
+  - file: "$font"
+    id: weather_23
+    size: 23
+    bpp: 4
+    glyphs: ${characters}
+
+  - file: "$font"
+    id: title_font
+    size: 18
+    bpp: 4
+    glyphs: ${characters}
+    extras:
+      - file: 'fonts/materialdesignicons-webfont.ttf' # http://materialdesignicons.com/cdn/7.4.47/ 
+        glyphs: [
+          "\U000F05A9", # mdi:wifi
+          "\U000F16C5", # mdi:wifi-remove
+          "\U000F001B", # mdi:air-conditioner
+          "\U000F0F92", # mdi:water-boiler
+          "\U000F1099", # mdi:air-humidifier
+          "\U000F0D44", # mdi:air-purifier
+          "\U000F1A73", # mdi:solar-power-variant
+          "\U000F192C"  # mdi:transmission-tower-export
+          ]  
+  - file: "fonts/materialdesignicons-webfont.ttf"
+    id: icon_font_60
+    size: 60
+    bpp: 4
+    glyphs: [
+          "\U000F081C", # mdi:door-open
+          "\U000F081B", # mdi:door-closed
+          "\U000F11DB", # mdi:window-closed-variant
+          "\U000F11DC" # mdi:window-open-variant
+          ]  
+  - file: "fonts/materialdesignicons-webfont.ttf"
+    id: icon_font_90
+    size: 90
+    bpp: 4
+    glyphs: [
+          "\U000F081C", # mdi:door-open
+          "\U000F081B", # mdi:door-closed
+          "\U000F11DB", # mdi:window-closed-variant
+          "\U000F11DC" # mdi:window-open-variant
+          ]  
+          
+  - file: "fonts/materialdesignicons-webfont.ttf"
+    id: icon_font_200
+    size: 200
+    bpp: 4
+    glyphs: [
+          "\U000F081C", # mdi:door-open
+          "\U000F081B", # mdi:door-closed
+          "\U000F11DB", # mdi:window-closed-variant
+          "\U000F11DC" # mdi:window-open-varian       
+          ]

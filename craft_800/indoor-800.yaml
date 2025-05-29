@@ -1,0 +1,75 @@
+sensor:
+# 실내 센서
+  - platform: homeassistant
+    entity_id: $temperature
+    #name: '${name} Temperature'
+    id: temperature
+    filters:        
+      #- lambda: return x + id(temp_offset);
+      - median:
+    on_value:
+      - lvgl.indicator.update:
+          id: temp_needle
+          value: !lambda return x * 10;
+      - lvgl.label.update:
+          id: temp_in_text
+          text:
+            format: "%.1f°c"
+            args: [ 'x' ]
+
+  - platform: homeassistant
+    entity_id: $humidity
+    #name: '${name} humidity'
+    id: humidity
+    filters:
+      - median:
+    on_value:
+      - lvgl.indicator.update:
+          id: hum_needle
+          value: !lambda return x;
+      - lvgl.label.update:
+          id: hum_in_text
+          text:
+            format: "%.0f%%"
+            args: [ 'x' ]
+#homeassistant
+  - platform: homeassistant
+    entity_id: $pm2_5
+    id: pm2_5
+    on_value:
+      - lvgl.indicator.update:
+          id: pm_in_needle
+          value: !lambda return x;
+      - lvgl.label.update:
+          id: pm_in_text
+          text:
+            format: " %.0f"
+            args: [ 'x' ]
+
+  - platform: homeassistant
+    entity_id: $tvoc
+    id: tvoc_value
+    on_value:
+      - lvgl.indicator.update:
+          id: tvoc_needle
+          value: !lambda return x;
+      - lvgl.label.update:
+          id: tvoc_text
+          text:
+            format: " %.0f"
+            args: [ 'x' ]
+
+  - platform: homeassistant
+    entity_id: $co2
+    id: mhz19_sensor
+    on_value:
+      - lvgl.indicator.update:
+          id: co2_needle
+          value: !lambda return x;
+      - lvgl.label.update:
+          id: co2_text
+          text:
+            format: " %.0f"
+            args: [ 'x' ]
+
+

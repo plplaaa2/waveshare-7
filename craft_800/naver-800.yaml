@@ -1,0 +1,312 @@
+text_sensor:
+#네이버 날씨
+  - platform: homeassistant
+    entity_id: weather.naver_weather_1
+    id: naver_weather_1
+    on_value:
+      - script.execute: weather_img
+
+  - platform: homeassistant
+    entity_id: sensor.naver_weather_nowweather_1
+    id: naver_weather_nowweather_1
+    on_value: 
+      then:
+        - lvgl.label.update:
+            id: home_weather_text
+            text: 
+              format: "%s"
+              args: [ x.c_str() ]
+
+  - platform: homeassistant
+    entity_id: sensor.naver_weather_windbearing_1
+    id: naver_weather_windbearing_1
+
+  - platform: homeassistant
+    entity_id: sensor.naver_weather_rainystarttmr_1
+    id: naver_weather_rainystarttmr_1
+    on_value:          
+      - if: 
+          condition:
+            - lambda: 'return id(naver_weather_rainystarttmr_1).state != "비안옴";'
+          then:
+            - lvgl.widget.show: home_weather_rainystarttmr
+            - lvgl.label.update:
+                id: home_weather_rainystarttmr
+                text: 
+                  format: "\U000F054A %s rain start (%smm)"
+                  args: [ x.c_str(), id(naver_weather_rainfall_1).state.c_str() ]
+          else:
+            - lvgl.widget.hide: home_weather_rainystarttmr
+
+  - platform: homeassistant
+    entity_id: sensor.naver_weather_rainfall_1
+    id: naver_weather_rainfall_1
+    
+  - platform: homeassistant
+    entity_id: sensor.naver_weather_finedustgrade_1
+    id: naver_weather_finedustgrade_1    
+    on_value:    
+      - if:
+          condition:
+            - lambda: 'return id(naver_weather_finedustgrade_1).state == "좋음";'
+          then:
+            - lvgl.label.update:
+                id: home_weather_pm10
+                text: "#005AC7 Good#"
+      - if:
+          condition:
+            - lambda: 'return id(naver_weather_finedustgrade_1).state == "보통";'
+          then:
+            - lvgl.label.update:
+                id: home_weather_pm10
+                text: "#00FF00 Normal#"
+      - if:
+          condition:
+            - lambda: 'return id(naver_weather_finedustgrade_1).state == "나쁨";'
+          then:
+            - lvgl.label.update:
+                id: home_weather_pm10
+                text: "#FFA500 Bad#"
+      - if:
+          condition:
+            - lambda: 'return id(naver_weather_finedustgrade_1).state == "매우나쁨";'
+          then:
+            - lvgl.label.update:
+                id: home_weather_pm10
+                text: "#FF0000 Too Bad#"
+                
+  - platform: homeassistant
+    entity_id: sensor.naver_weather_ultrafinedustgrade_1
+    id: naver_weather_ultrafinedustgrade_1    
+    on_value:    
+      - if:
+          condition:
+            - lambda: 'return id(naver_weather_ultrafinedustgrade_1).state == "좋음";'
+          then:
+            - lvgl.label.update:
+                id: home_weather_pm25
+                text: "#005AC7 Good#"
+      - if:
+          condition:
+            - lambda: 'return id(naver_weather_ultrafinedustgrade_1).state == "보통";'
+          then:
+            - lvgl.label.update:
+                id: home_weather_pm25
+                text: "#00FF00 Normal#"
+      - if:
+          condition:
+            - lambda: 'return id(naver_weather_ultrafinedustgrade_1).state == "나쁨";'
+          then:
+            - lvgl.label.update:
+                id: home_weather_pm25
+                text: "#FFA500 Bad#"
+      - if:
+          condition:
+            - lambda: 'return id(naver_weather_ultrafinedustgrade_1).state == "매우나쁨";'
+          then:
+            - lvgl.label.update:
+                id: home_weather_pm25
+                text: "#FF0000 Too Bad#"
+    
+  - platform: homeassistant
+    entity_id: sensor.naver_weather_ozongrade_1
+    id: naver_weather_ozongrade_1    
+    on_value:    
+      - if:
+          condition:
+            - lambda: 'return id(naver_weather_ozongrade_1).state == "좋음";'
+          then:
+            - lvgl.label.update:
+                id: home_weather_ozongrade
+                text: "#005AC7 Good#"
+      - if:
+          condition:
+            - lambda: 'return id(naver_weather_ozongrade_1).state == "보통";'
+          then:
+            - lvgl.label.update:
+                id: home_weather_ozongrade
+                text: "#00FF00 Normal#"
+      - if:
+          condition:
+            - lambda: 'return id(naver_weather_ozongrade_1).state == "나쁨";'
+          then:
+            - lvgl.label.update:
+                id: home_weather_ozongrade
+                text: "#FFA500 Bad#"
+      - if:
+          condition:
+            - lambda: 'return id(naver_weather_ozongrade_1).state == "매우나쁨";'
+          then:
+            - lvgl.label.update:
+                id: home_weather_ozongrade
+                text: "#FF0000 Too Bad#"
+
+
+  - platform: homeassistant
+    entity_id: sensor.naver_weather_todayuvgrade_1
+    id: naver_weather_todayuvgrade_1   
+    on_value:    
+      - if:
+          condition:
+            - lambda: 'return id(naver_weather_todayuvgrade_1).state == "좋음";'
+          then:
+            - lvgl.label.update:
+                id: home_weather_todayuvgrade
+                text: "#005AC7 Good#"
+      - if:
+          condition:
+            - lambda: 'return id(naver_weather_todayuvgrade_1).state == "보통";'
+          then:
+            - lvgl.label.update:
+                id: home_weather_todayuvgrade
+                text: "#00FF00 Normal#"
+      - if:
+          condition:
+            - lambda: 'return id(naver_weather_todayuvgrade_1).state == "나쁨";'
+          then:
+            - lvgl.label.update:
+                id: home_weather_todayuvgrade
+                text: "#FFA500 Bad#"
+      - if:
+          condition:
+            - lambda: 'return id(naver_weather_todayuvgrade_1).state == "매우나쁨";'
+          then:
+            - lvgl.label.update:
+                id: home_weather_todayuvgrade
+                text: "#FF0000 Too Bad#"
+
+sensor:
+#HA Sensors
+# Naver Weather
+  - platform: homeassistant
+    entity_id: sensor.naver_weather_todayfeeltemp_1
+    id: naver_weather_todayfeeltemp_1
+    on_value:
+      - lvgl.label.update:
+          id: home_weather_now
+          text:
+            format: "%.1f°"
+            args: [ 'x' ]
+
+  - platform: homeassistant
+    entity_id: sensor.naver_weather_todaymintemp_1
+    id: naver_weather_todaymintemp_1
+    accuracy_decimals: 1
+    
+  - platform: homeassistant
+    entity_id: sensor.naver_weather_todaymaxtemp_1
+    id: naver_weather_todaymaxtemp_1
+    accuracy_decimals: 1
+    on_value:
+      - lvgl.label.update:
+          id: home_weather_minmax
+          text: 
+            format: "#47ACF5 %.1f°#|#FF0000 %.1f°#"
+            args: [ 'id(naver_weather_todaymintemp_1).state', 'x' ]
+
+  - platform: homeassistant
+    entity_id: sensor.naver_weather_humidity_1
+    id: naver_weather_humidity_1
+    on_value:
+      - lvgl.label.update:
+          id: home_weather_hum
+          text: 
+            format: "#47ACF5 HUM# %.0f%% #02D109 %s# %.1f m/s"
+            args: [ 'x', 'id(naver_weather_windbearing_1).state.c_str()', 'id(naver_weather_windspeed_1).state']
+   
+  - platform: homeassistant
+    entity_id: sensor.naver_weather_windspeed_1
+    id: naver_weather_windspeed_1
+    
+script:
+  - id: weather_img
+    then:
+      - if:
+          condition:
+            or:
+              - lambda: 'return id(naver_weather_1).state == "sunny";'
+              - lambda: 'return id(naver_weather_1).state == "clear";'
+          then:
+            - lvgl.image.update:
+                id: home_weather_icon
+                src: sunny
+      - if:
+          condition:
+            or:
+              - lambda: 'return id(naver_weather_1).state == "clear-night";'
+              - lambda: 'return id(naver_weather_1).state == "night";'
+          then:
+            - lvgl.image.update:
+                id: home_weather_icon
+                src: clearnight
+      - if:
+          condition:
+            - lambda: 'return id(naver_weather_1).state == "partlycloudy";'
+          then:
+            - lvgl.image.update:
+                id: home_weather_icon
+                src: partlycloud
+      - if:
+          condition:
+            and:              
+              - lambda: 'return id(naver_weather_1).state == "partlycloudy";'
+              - sun.is_below_horizon:
+          then:
+            - lvgl.image.update:
+                id: home_weather_icon
+                src: nightpartlycloud
+      - if:
+          condition:            
+            - lambda: 'return id(naver_weather_1).state == "cloudy";'
+            - sun.is_below_horizon:
+          then:
+            - lvgl.image.update:
+                id: home_weather_icon
+                src: scloud
+      - if:
+          condition:            
+            and:              
+              - lambda: 'return id(naver_weather_1).state == "cloudy";'
+          then:
+            - lvgl.image.update:
+                id: home_weather_icon
+                src: cloudy
+      - if:
+          condition:
+            - lambda: 'return id(naver_weather_1).state == "rainy";'
+          then:
+            - lvgl.image.update:
+                id: home_weather_icon
+                src: rainy
+      - if:
+          condition:
+            - lambda: 'return id(naver_weather_1).state == "pouring";'
+          then:
+            - lvgl.image.update:
+                id: home_weather_icon
+                src: pouring 
+      - if:
+          condition:
+            - lambda: 'return id(naver_weather_1).state == "hail";'
+          then:
+            - lvgl.image.update:
+                id: home_weather_icon
+                src: hail
+      - if:
+          condition:
+            - lambda: 'return id(naver_weather_1).state == "snowy";'
+          then:
+            - lvgl.image.update:
+                id: home_weather_icon
+                src: snowy
+
+      - if:
+          condition:
+            or:
+              - lambda: 'return id(naver_weather_1).state == "lightning";'
+              - lambda: 'return id(naver_weather_1).state == "lightning-rainy";'
+              - lambda: 'return id(naver_weather_1).state == "thender";'
+          then:
+            - lvgl.image.update:
+                id: home_weather_icon
+                src: lightning       

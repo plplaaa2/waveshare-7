@@ -1,0 +1,2040 @@
+switch:
+
+  - platform: lvgl
+    widget: climate_button
+    id: climate_sw
+    on_turn_on:
+      - if:
+          condition:
+            - switch.is_on: blind_sw
+          then:
+            - switch.turn_off: blind_sw
+      - if:
+          condition:
+            - switch.is_on: radio_sw
+          then:
+            - switch.turn_off: radio_sw
+      - if:
+          condition:
+            - switch.is_on: energy_sw
+          then:
+            - switch.turn_off: energy_sw
+      - if:
+          condition:
+            - switch.is_on: setting_sw
+          then:
+            - switch.turn_off: setting_sw
+            
+      - script.execute: hide_weather
+      - lvgl.widget.show: climate_card
+    on_turn_off:
+      - lvgl.widget.hide: climate_card
+      - script.execute: show_weather
+
+
+  - platform: lvgl
+    widget: blind_button
+    id: blind_sw
+    on_turn_on:
+      - if:
+          condition:
+            - switch.is_on: climate_sw
+          then:
+            - switch.turn_off: climate_sw
+      - if:
+          condition:
+            - switch.is_on: radio_sw
+          then:
+            - switch.turn_off: radio_sw
+      - if:
+          condition:
+            - switch.is_on: energy_sw
+          then:
+            - switch.turn_off: energy_sw
+      - if:
+          condition:
+            - switch.is_on: setting_sw
+          then:
+            - switch.turn_off: setting_sw
+        
+      - script.execute: hide_weather
+      - lvgl.widget.show: blind_card
+    on_turn_off:
+      - lvgl.widget.hide: blind_card
+      - script.execute: show_weather
+      
+  - platform: lvgl
+    widget: radio_button
+    id: radio_sw
+    on_turn_on:
+      - if:
+          condition:
+            - switch.is_on: climate_sw
+          then:
+            - switch.turn_off: climate_sw
+      - if:
+          condition:
+            - switch.is_on: blind_sw
+          then:
+            - switch.turn_off: blind_sw
+      - if:
+          condition:
+            - switch.is_on: energy_sw
+          then:
+            - switch.turn_off: energy_sw
+      - if:
+          condition:
+            - switch.is_on: setting_sw
+          then:
+            - switch.turn_off: setting_sw
+            
+      - script.execute: hide_weather
+      - lvgl.widget.show: radio_card
+    on_turn_off:
+      - lvgl.widget.hide: radio_card
+      - script.execute: show_weather
+      
+  - platform: lvgl
+    widget: energy_button
+    id: energy_sw
+    on_turn_on:
+      - if:
+          condition:
+            - switch.is_on: climate_sw
+          then:
+            - switch.turn_off: climate_sw
+      - if:
+          condition:
+            - switch.is_on: blind_sw
+          then:
+            - switch.turn_off: blind_sw
+      - if:
+          condition:
+            - switch.is_on: radio_sw
+          then:
+            - switch.turn_off: radio_sw
+      - if:
+          condition:
+            - switch.is_on: setting_sw
+          then:
+            - switch.turn_off: setting_sw
+      - script.execute: hide_weather
+      - lvgl.widget.show: energy_card
+      - lvgl.widget.show: meter_card
+    on_turn_off:
+      - lvgl.widget.hide: energy_card
+      - lvgl.widget.hide: meter_card
+      - script.execute: show_weather  
+
+  - platform: lvgl
+    widget: setting_button
+    id: setting_sw
+    on_turn_on:
+      - if:
+          condition:
+            - switch.is_on: climate_sw
+          then:
+            - switch.turn_off: climate_sw
+      - if:
+          condition:
+            - switch.is_on: blind_sw
+          then:
+            - switch.turn_off: blind_sw
+      - if:
+          condition:
+            - switch.is_on: radio_sw
+          then:
+            - switch.turn_off: radio_sw
+      - if:
+          condition:
+            - switch.is_on: energy_sw
+          then:
+            - switch.turn_off: energy_sw
+      - script.execute: hide_weather
+      - lvgl.widget.show: setting_card
+    on_turn_off:
+      - lvgl.widget.hide: setting_card
+      - script.execute: show_weather
+
+lvgl:  
+  pages:
+    - id: main_page
+      widgets:
+# status bar
+        - obj:
+            x: 0
+            y: 0
+            width: 800
+            height: 30
+            styles : title_bar
+            widgets:
+              - obj:
+                  width: 350
+                  height: 100%
+                  styles : title_bar
+                  align: TOP_LEFT
+                  layout:
+                    type: FLEX
+                    flex_flow: ROW
+                    flex_align_main: START
+                  widgets:                  
+                    - label:
+                        text: "AM 00:00"
+                        id: title_time
+                        align: BOTTOM_LEFT
+                        text_align: left
+                    - label:
+                        text: "\U000F001B"
+                        id: aircon_run
+                        hidden: true
+                        align: BOTTOM_RIGHT
+                        text_align: right
+
+                  
+              - label:
+                  text: "2000-00-00(SUN)"
+                  id: title_date
+                  align: TOP_MID
+                  x: 0
+                  y: 2
+                  text_align: CENTER
+              - obj:
+                  width: 350
+                  height: 100%
+                  styles : title_bar
+                  align: TOP_RIGHT
+                  layout:
+                    type: FLEX
+                    flex_flow: ROW
+                    flex_align_main: END
+                  widgets:
+                    - label:
+                        text: "\U000F192C 0 W"
+                        id: energy_meter_power_title
+                        align: BOTTOM_RIGHT 
+                        text_align: right
+                    - label:
+                        text: "\U000F1A73 0 W"
+                        id: solar_power_title
+                        align: BOTTOM_RIGHT             
+                        text_align: right
+                    - label:
+                        text: "HA"
+                        id: ha_connected_title
+                        hidden: true
+                        text_align: RIGHT
+                    - label:
+                        text: "\U000F16C5"
+                        id: wifi_icon
+                        align: BOTTOM_RIGHT
+                        text_align: right
+        - obj:
+            x: 0
+            y: 30
+            align: TOP_LEFT
+            styles: base_style
+            width: 800
+            height: 450
+            widgets:
+#weather card
+            - button:
+                x: 0
+                y: 0
+                width: 460
+                height: 255
+                styles: card
+                id: weather_card
+                pad_all: 10
+                widgets:
+# weather icon
+                  - obj:
+                      x: 0
+                      y: 0
+                      width: 150
+                      height: 150
+                      align: TOP_LEFT
+                      styles: base_style
+                      widgets:
+                        - image:
+                            x: 0
+                            y: 0
+                            align: TOP_MID
+                            bg_opa: TRANSP
+                            id: home_weather_icon
+                            src: blank
+                            zoom: 1.2
+                            antialias: true
+# weather states
+                  - obj:
+                      x: 0
+                      y: -5
+                      align: TOP_RIGHT
+                      width: 310
+                      height: 150
+                      styles: base_style
+                      pad_left: 35
+                      widgets:
+                        - label:
+                            text: "Cloudy"
+                            x: 0
+                            y: 10
+                            align: TOP_LEFT
+                            id: home_weather_text
+                            text_font: weather_30
+                            text_align: CENTER
+                            text_color: 0xF5F5F5
+                        - label:
+                            text: "--.-°"
+                            x: 0
+                            y: 5
+                            align: TOP_RIGHT
+                            id: home_weather_now
+                            text_align: CENTER
+                            text_font: weather_60
+                            text_color: 0xF5F5F5
+                        - label:
+                            text: "--.-°|--.-°"
+                            x: 0
+                            y: -10
+                            align: LEFT_MID
+                            id: home_weather_minmax
+                            recolor: true
+                            text_align: CENTER
+                            text_font: regular_20
+                            text_color: 0xA0A0A0
+                        - label:
+                            text: "Hum --% -- -.- m/s"
+                            x: 0
+                            y: 20
+                            align: LEFT_MID
+                            id: home_weather_hum
+                            recolor: true
+                            text_align: CENTER
+                            text_font: regular_20
+                            text_color: 0xA0A0A0
+                        - label:
+                            x: 0
+                            y: 50
+                            align: LEFT_MID
+                            text: "--h rainy(--.-mm)"
+                            id: home_weather_rainystarttmr
+                            hidden: true
+                            text_align: CENTER
+                            text_font: regular_20
+                            text_color: 0xFFA500
+# weather info
+                  - obj:
+                      x: 0
+                      y: 0
+                      align: BOTTOM_LEFT
+                      width: 440
+                      height: 95
+                      styles: base_style
+
+                      pad_left: 10
+                      pad_right: 10
+                      widgets:        
+                        - label:
+                            text: "\U000F00B5 PM 2.5"
+                            y: 5
+                            align: TOP_LEFT
+                            text_align: CENTER
+                            text_font: regular_20
+                            text_color: 0xE5E5E5
+                        - label:
+                            text: "Very bad"
+                            x: 100
+                            y: 5
+                            align: TOP_LEFT
+                            id: home_weather_pm10
+                            text_align: LEFT
+                            recolor: true
+                            text_font: regular_20
+                            text_color: 0xE5E5E5
+                        - label:
+                            text: "UV \U000F17FF"
+                            y: 5
+                            align: TOP_RIGHT
+                            text_align: RIGHT
+                            text_font: regular_20
+                            text_color: 0xE5E5E5
+                        - label:
+                            text: "Very High"
+                            x: -70
+                            y: 5
+                            align: TOP_RIGHT
+                            id: home_weather_todayuvgrade
+                            text_align: RIGHT
+                            recolor: true
+                            text_font: regular_20
+                            text_color: 0xE5E5E5
+                        - label:
+                            text: "\U000F00B6 PM 10"
+                            y: 0
+                            align: LEFT_MID
+                            text_align: CENTER
+                            text_font: regular_20
+                            text_color: 0xE5E5E5
+                        - label:
+                            text: "too bad"
+                            x: 95
+                            y: 0
+                            align: LEFT_MID
+                            id: home_weather_pm25
+                            text_align: LEFT
+                            recolor: true
+                            text_font: regular_20
+                            text_color: 0xE5E5E5
+                        - label:
+                            text: "OZ \U000F0C16"
+                            y: 0
+                            align: RIGHT_MID
+                            text_align: RIGHT
+                            text_font: regular_20
+                            text_color: 0xE5E5E5
+                        - label:
+                            text: "too bad"
+                            x: -70
+                            y: 0
+                            align: RIGHT_MID
+                            id: home_weather_ozongrade
+                            text_align: RIGHT
+                            recolor: true
+                            text_font: regular_20
+                            text_color: 0xE5E5E5
+                        - label:
+                            y: -2
+                            text: "\U000F059C --:--:--"
+                            align: BOTTOM_LEFT
+                            id: home_weather_sunrise
+                            text_align: LEFT
+                            recolor: true
+                            text_font: regular_20
+                            text_color: 0xE5E5E5
+                        - label:
+                            y: -2
+                            text: "--:--:-- \U000F059B"
+                            align: BOTTOM_RIGHT
+                            id: home_weather_sunset
+                            recolor: true
+                            text_align: RIGHT
+                            text_font: regular_20
+                            text_color: 0xE5E5E5
+# indoor air quality
+            - button:
+                x: 0
+                align: BOTTOM_LEFT
+                width: 460
+                height: 190
+                styles: card
+                id: air_quality_card
+                layout: 
+                  type: flex
+                  flex_flow: row
+                  flex_align_main: space_between
+                  flex_align_cross: center
+                  flex_align_track : space_between
+                widgets:
+                  - meter:
+                      x: 0
+                      y: 0
+                      width: 150
+                      height: 170
+                      border_width: 0
+                      bg_opa: TRANSP
+                      scales:
+                        - range_from: 400
+                          range_to: 5000
+                          angle_range: 250
+                          ticks:
+                            count: 0
+                          indicators:
+                            - line:
+                                id: co2_needle
+                                width: 5
+                                color: 0xE5E5E5
+                                r_mod: 13
+                                value: "0"
+                            - arc: 
+                                color: 0x0285D1
+                                r_mod: 10 
+                                width: 25
+                                start_value: 400
+                                end_value: 800
+                            - arc: 
+                                color: 0x02d189
+                                r_mod: 10
+                                width: 25
+                                start_value: 800
+                                end_value: 1200
+                            - arc: 
+                                color: 0x02D109
+                                r_mod: 10
+                                width: 25
+                                start_value: 1200
+                                end_value: 1600
+                            - arc: 
+                                color: 0xE86E02
+                                r_mod: 10
+                                width: 25
+                                start_value: 1600
+                                end_value: 2000
+                            - arc: 
+                                color: 0xE84302
+                                r_mod: 10
+                                width: 25
+                                start_value: 2000
+                                end_value: 3000
+                            - arc: 
+                                color: 0xAB0202
+                                r_mod: 10
+                                width: 25
+                                start_value: 3000
+                                end_value: 4000
+                            - arc: 
+                                color: 0x141414
+                                r_mod: 10
+                                width: 25
+                                start_value: 4000
+                                end_value: 5000
+                      widgets:
+                        - obj:
+                            y: -10
+                            height: 105
+                            width: 105
+                            radius: 80
+                            align: CENTER
+                            border_width: 0
+                            bg_color: 0x222222
+                            pad_all: 0
+                        - label:
+                            x: -5
+                            y: -10
+                            align: CENTER
+                            text: "----"
+                            id: co2_text
+                            text_font: weather_30
+                            text_color: 0xE5E5E5
+                            text_align: CENTER
+                        - label:
+                            x: 0
+                            y: 30
+                            align: CENTER
+                            text: "ppm"
+                            text_font: weather_23
+                            text_color: 0xE5E5E5
+                            text_align: CENTER    
+                        - label:
+                            x: 0
+                            y: 70
+                            align: CENTER
+                            text: "CO2"
+                            text_font: weather_23
+                            text_color: 0xE5E5E5
+                            text_align: CENTER
+                  - meter:
+                      x: 0
+                      y: 0
+                      width: 150
+                      height: 170
+                      border_width: 0
+                      bg_opa: TRANSP
+                      scales:
+                        - range_from: 0
+                          range_to: 500
+                          angle_range: 250
+                          ticks:
+                            count: 0
+                          indicators:
+                            - line:
+                                id: tvoc_needle
+                                width: 5
+                                color: 0xE5E5E5
+                                r_mod: 13
+                                value: "0"
+                            - arc: 
+                                color: 0x0285D1
+                                r_mod: 10 
+                                width: 25
+                                start_value: 0
+                                end_value: 100
+                            - arc: 
+                                color: 0x02D109
+                                r_mod: 10
+                                width: 25
+                                start_value: 100
+                                end_value: 200
+                            - arc: 
+                                color: 0xE86E02
+                                r_mod: 10
+                                width: 25
+                                start_value: 200
+                                end_value: 300
+                            - arc: 
+                                color: 0xE84302
+                                r_mod: 10
+                                width: 25
+                                start_value: 300
+                                end_value: 400
+                            - arc: 
+                                color: 0xAB0202
+                                r_mod: 10
+                                width: 25
+                                start_value: 400
+                                end_value: 500
+
+                      widgets:
+                        - obj:
+                            y: -10
+                            height: 105
+                            width: 105
+                            radius: 80
+                            align: CENTER
+                            border_width: 0
+                            bg_color: 0x222222
+                            pad_all: 0
+                        - label:
+                            x: -5
+                            y: -10
+                            align: CENTER
+                            text: "----"
+                            id: tvoc_text
+                            text_font: weather_30
+                            text_color: 0xE5E5E5
+                            text_align: CENTER
+                        - label:
+                            x: 0
+                            y: 30
+                            align: CENTER
+                            text: "ppb"
+                            text_font: weather_23
+                            text_color: 0xE5E5E5
+                            text_align: CENTER    
+                        - label:
+                            x: 0
+                            y: 70
+                            align: CENTER
+                            text: "TVOC"
+                            text_font: weather_23
+                            text_color: 0xE5E5E5
+                            text_align: CENTER
+
+                  - meter:
+                      x: 0
+                      y: 0
+                      width: 150
+                      height: 170
+                      border_width: 0
+                      bg_opa: TRANSP
+                      scales:
+                        - range_from: 0
+                          range_to: 100
+                          angle_range: 250
+                          ticks:
+                            count: 0
+                          indicators:
+                            - line:
+                                id: pm_in_needle
+                                width: 5
+                                color: 0xE5E5E5
+                                r_mod: 13
+                                value: "0"
+                            - arc: 
+                                color: 0x0285D1
+                                r_mod: 10 
+                                width: 25
+                                start_value: 0
+                                end_value: 8
+                            - arc: 
+                                color: 0x02A8D1
+                                r_mod: 10
+                                width: 25
+                                start_value: 8
+                                end_value: 15
+                            - arc: 
+                                color: 0x02d189
+                                r_mod: 10
+                                width: 25
+                                start_value: 15
+                                end_value: 20
+                            - arc: 
+                                color: 0x02D109
+                                r_mod: 10
+                                width: 25
+                                start_value: 20
+                                end_value: 25
+                            - arc: 
+                                color: 0xE86E02
+                                r_mod: 10
+                                width: 25
+                                start_value: 25
+                                end_value: 37
+                            - arc: 
+                                color: 0xE84302
+                                r_mod: 10
+                                width: 25
+                                start_value: 37
+                                end_value: 50
+                            - arc: 
+                                color: 0xAB0202
+                                r_mod: 10
+                                width: 25
+                                start_value: 50
+                                end_value: 75
+                            - arc: 
+                                color: 0x141414
+                                r_mod: 10
+                                width: 25
+                                start_value: 75
+                                end_value: 100
+                      widgets:
+                        - obj:
+                            y: -10
+                            height: 105
+                            width: 105
+                            radius: 80
+                            align: CENTER
+                            border_width: 0
+                            bg_color: 0x222222
+                            pad_all: 0
+                        - label:
+                            x: -5
+                            y: -10
+                            align: CENTER
+                            text: "----"
+                            id: pm_in_text
+                            text_font: weather_30
+                            text_color: 0xE5E5E5
+                            text_align: CENTER
+                        - label:
+                            x: 0
+                            y: 30
+                            align: CENTER
+                            text: "µg"
+                            text_font: weather_23
+                            text_color: 0xE5E5E5
+                            text_align: CENTER    
+                        - label:
+                            x: 0
+                            y: 70
+                            align: CENTER
+                            text: "PM 2.5"
+                            text_font: weather_23
+                            text_color: 0xE5E5E5
+                            text_align: CENTER
+# Indoor temp/hum
+            - button:
+                x: -102
+                y: 0
+                align: TOP_RIGHT
+                width: 233
+                height: 450
+                styles: card                
+                pad_all: 15
+                id: temp_card
+                layout: 
+                  type: flex
+                  flex_flow: column
+                  flex_align_main: space_around
+                  flex_align_cross: center
+                  flex_align_track : space_around
+                widgets:
+                  - meter:
+                      x: 0
+                      y: 0
+                      width: 180
+                      height: 180
+                      border_width: 0
+                      bg_opa: TRANSP
+                      align: TOP_MID
+                      scales:
+                        - range_from: 0
+                          range_to: 400
+                          angle_range: 250
+                          ticks:
+                            count: 0
+                          indicators:
+                            - line:
+                                id: temp_needle
+                                width: 8
+                                color: 0xE5E5E5
+                                r_mod: 18 
+                                value: "0"
+                            - arc: 
+                                color: 0x005AC7
+                                r_mod: 10 
+                                width: 25
+                                start_value: 0
+                                end_value: 150
+                            - arc: 
+                                color: 0x0088C7
+                                r_mod: 10
+                                width: 25
+                                start_value: 150
+                                end_value: 221
+                            - arc: 
+                                color: 0x11C700
+                                r_mod: 10
+                                width: 25
+                                start_value: 221
+                                end_value: 270
+                            - arc: 
+                                color: 0xFF8C00
+                                r_mod: 10
+                                width: 25
+                                start_value: 270
+                                end_value: 330
+                            - arc: 
+                                color: 0xFF0000
+                                r_mod: 10
+                                width: 25
+                                start_value: 330
+                                end_value: 400
+                      widgets:
+                        - obj:
+                            height: 120
+                            width: 120
+                            radius: 73
+                            align: CENTER
+                            border_width: 0
+                            bg_color: 0x222222
+                            pad_all: 0
+                        - label:
+                            x: 0
+                            y: 0
+                            align: CENTER
+                            text: "--.-°c"
+                            id: temp_in_text
+                            text_font: weather_30
+                            text_color: 0xE5E5E5
+                            text_align: CENTER
+                        - label:
+                            x: 0
+                            y: 70
+                            align: CENTER
+                            text: "Indoor Temp"
+                            text_font: weather_23
+                            text_color: 0xE5E5E5
+                            text_align: CENTER     
+                  - meter:
+                      x: 0
+                      y: 0
+                      width: 180
+                      height: 180
+                      border_width: 0
+                      bg_opa: TRANSP
+                      align: BOTTOM_MID
+                      scales:
+                        - range_from: 0
+                          range_to: 100
+                          angle_range: 250
+                          ticks:
+                            count: 0
+                          indicators:
+                            - line:
+                                id: hum_needle
+                                width: 8
+                                color: 0xE5E5E5
+                                r_mod: 18
+                                value: "0"
+                            - arc: 
+                                color: 0xB3DEFC
+                                r_mod: 10 
+                                width: 25
+                                start_value: 0
+                                end_value: 25
+                            - arc: 
+                                color: 0x74C1F7
+                                r_mod: 10
+                                width: 25
+                                start_value: 25
+                                end_value: 45
+                            - arc: 
+                                color: 0x69C0FF
+                                r_mod: 10
+                                width: 25
+                                start_value: 45
+                                end_value: 65
+                            - arc: 
+                                color: 0x47ACF5
+                                r_mod: 10
+                                width: 25
+                                start_value: 65
+                                end_value: 85
+                            - arc: 
+                                color: 0x0095FF
+                                r_mod: 10
+                                width: 25
+                                start_value: 85
+                                end_value: 100
+                      widgets:
+                        - obj:
+                            height: 120
+                            width: 120
+                            radius: 73
+                            align: CENTER
+                            border_width: 0
+                            bg_color: 0x222222
+                            pad_all: 0
+                        - label:
+                            x: 0
+                            y: 0
+                            align: CENTER
+                            text: "--%"
+                            id: hum_in_text
+                            text_font: weather_30
+                            text_color: 0xE5E5E5
+                            text_align: CENTER
+                        - label:
+                            x: 0
+                            y: 70
+                            align: CENTER
+                            text: "Indoor Hum"
+                            text_font: weather_23
+                            text_color: 0xE5E5E5
+                            text_align: CENTER
+
+#Climate Card
+            - button:
+                x: 0
+                y: 0
+                width: 460
+                height: 450
+                styles: card
+                id: climate_card
+                hidden: true
+                pad_all: 10
+                
+                widgets:
+                  - label:
+                      x: -10
+                      y: 10
+                      align: TOP_RIGHT
+                      text: "Climate"
+                      text_font: regular_40
+                  - arc:
+                      x: 0
+                      y: 0
+                      width: 300
+                      height: 300
+                      align: CENTER
+                      adjustable: true
+                      min_value: 18
+                      max_value: 30
+                      start_angle: 150
+                      end_angle: 30
+                      id: aircon_set_temp_arc
+                      on_change:
+                        - homeassistant.action:
+                            action: climate.set_temperature
+                            data: 
+                              entity_id: climate.eeokeon
+                              temperature: !lambda 'return x;'
+                      widgets:
+                        - label:
+                            x: 0
+                            y: -70
+                            align: CENTER
+                            text: ""
+                            id: aircon_mode_text
+                            text_font: regular_40
+                            text_color: 0xE5E5E5
+                            text_align: CENTER
+                            recolor: true
+                        - label:
+                            x: 10
+                            y: 0
+                            align: CENTER
+                            text: "--.-°c"
+                            id: aircon_set_temp_text
+                            text_font: weather_60
+                            text_color: 0xE5E5E5
+                            text_align: CENTER
+                        - label:
+                            x: 0
+                            y: 55
+                            align: CENTER
+                            text: "Set Temp"
+                            text_font: regular_25
+                            text_color: 0xE5E5E5
+                            text_align: CENTER
+                        - button:
+                            x: -60
+                            y: 110
+                            width: 50
+                            height: 50
+                            align: CENTER
+                            bg_opa: TRANSP
+                            radius: 75
+                            outline_width: 1
+                            on_click:
+                              then:
+                                - homeassistant.action:
+                                    action: climate.set_temperature
+                                    data: 
+                                      entity_id: climate.eeokeon
+                                      temperature: !lambda 'return (id(aircon_set_temp).state) - 1 ;'
+                            widgets:
+                              - label:
+                                  align: center
+                                  text: "-"
+                                  text_align: center
+                                  text_font: regular_40
+                        - button:
+                            x: 60
+                            y: 110
+                            width: 50
+                            height: 50
+                            align: CENTER
+                            bg_opa: TRANSP
+                            radius: 75
+                            outline_width: 1
+                            on_click:
+                              then:
+                                - homeassistant.action:
+                                    action: climate.set_temperature
+                                    data: 
+                                      entity_id: climate.eeokeon
+                                      temperature: !lambda 'return (id(aircon_set_temp).state) + 1 ;'
+                            widgets:
+                              - label:
+                                  align: center
+                                  text: "+"
+                                  text_align: center
+                                  text_font: regular_40
+                  - obj:
+                      styles: base_style
+                      x: 10
+                      y: -10
+                      width: 100
+                      height: 55
+                      align: BOTTOM_LEFT
+                      widgets:
+                        - dropdown:
+                            id: aircon_mode_set
+                            width: 100%
+                            dir: TOP
+                            align: CENTER                            
+                            options:
+                              - "\U000F1A79"
+                              - "\U000F0238"
+                              - "\U000F0717"
+                              - "\U000F058E"
+                              - "\U000F0210"
+                              - "\U000F0425"
+                            on_change:
+                              then:
+                                - if:
+                                    condition:
+                                      - lambda: 'return x == 0;'
+                                    then:
+                                      - homeassistant.action:
+                                          action: climate.set_hvac_mode
+                                          data: 
+                                             entity_id: climate.eeokeon
+                                             hvac_mode: 'heat_cool'
+                                - if:
+                                    condition:
+                                      - lambda: 'return x == 1;'
+                                    then:
+                                      - homeassistant.action:
+                                          action: climate.set_hvac_mode
+                                          data: 
+                                             entity_id: climate.eeokeon
+                                             hvac_mode: 'heat'
+                                - if:
+                                    condition:
+                                      - lambda: 'return x == 2;'
+                                    then:
+                                      - homeassistant.action:
+                                          action: climate.set_hvac_mode
+                                          data: 
+                                             entity_id: climate.eeokeon
+                                             hvac_mode: 'cool'
+                                - if:
+                                    condition:
+                                      - lambda: 'return x == 3;'
+                                    then:
+                                      - homeassistant.action:
+                                          action: climate.set_hvac_mode
+                                          data: 
+                                             entity_id: climate.eeokeon
+                                             hvac_mode: 'dry'
+                                - if:
+                                    condition:
+                                      - lambda: 'return x == 4;'
+                                    then:
+                                      - homeassistant.action:
+                                          action: climate.set_hvac_mode
+                                          data: 
+                                             entity_id: climate.eeokeon
+                                             hvac_mode: 'fan_only'
+                                - if:
+                                    condition:
+                                      - lambda: 'return x == 5;'
+                                    then:
+                                      - homeassistant.action:
+                                          action: climate.set_hvac_mode
+                                          data: 
+                                             entity_id: climate.eeokeon
+                                             hvac_mode: 'off'
+
+                  - obj:
+                      styles: base_style
+                      x: -10
+                      y: -10
+                      width: 100
+                      height: 55
+                      align: BOTTOM_RIGHT
+                      widgets:
+                        - dropdown:
+                            id: aircon_fan_mode_Set
+                            width: 100%
+                            dir: TOP
+                            align: CENTER
+                            options:
+                              - "\U000F171D"
+                              - "\U000F1474"
+                              - "\U000F1473"
+                              - "\U000F1472"
+                            on_change:
+                              then:
+                                - if:
+                                    condition:
+                                      - lambda: 'return x == 0;'
+                                    then:
+                                      - homeassistant.action:
+                                          action: climate.set_fan_mode
+                                          data: 
+                                             entity_id: climate.eeokeon
+                                             fan_mode: 'diffuse'
+                                - if:
+                                    condition:
+                                      - lambda: 'return x == 1;'
+                                    then:
+                                      - homeassistant.action:
+                                          action: climate.set_fan_mode
+                                          data: 
+                                             entity_id: climate.eeokeon
+                                             fan_mode: 'high'
+                                - if:
+                                    condition:
+                                      - lambda: 'return x == 2;'
+                                    then:
+                                      - homeassistant.action:
+                                          action: climate.set_fan_mode
+                                          data: 
+                                             entity_id: climate.eeokeon
+                                             fan_mode: 'medium'
+                                - if:
+                                    condition:
+                                      - lambda: 'return x == 3;'
+                                    then:
+                                      - homeassistant.action:
+                                          action: climate.set_fan_mode
+                                          data: 
+                                             entity_id: climate.eeokeon
+                                             fan_mode: 'low'
+
+
+                  - button:
+                      x: 10
+                      y: 10
+                      align: TOP_LEFT
+                      width: 100
+                      height: 50
+                      styles: card
+                      outline_width: 1
+                      widgets:
+                        - label:
+                            align: CENTER
+                            text: "< Back"
+                            text_font: regular_20
+                      on_press:
+                        then:
+                          - switch.turn_off: climate_sw
+
+#blind card
+            - button:
+                x: 0
+                y: 0
+                width: 696
+                height: 450
+                styles: card
+                id: blind_card
+                hidden: true
+                pad_all: 10
+                widgets:
+                  - label:
+                      x: -10
+                      y: 10
+                      align: TOP_RIGHT
+                      text: "LV Blind"
+                      text_align: RIGHT
+                      text_font: regular_40
+                  - label:
+                      x: 0
+                      y: -70
+                      align: CENTER
+                      id: blind_all_state
+                      text: "Closed"
+                      text_align: RIGHT
+                      text_font: regular_40
+
+                  - slider:
+                      x: 0
+                      id: blind_all_slider
+                      align: CENTER
+                      width: 65%
+                      height: 30
+                      value: 35
+                      min_value: 0
+                      max_value: 100
+                      on_release:
+                        then:
+                          - homeassistant.action:
+                              action: cover.set_cover_position
+                              data: 
+                                entity_id: cover.beotikeol_beulraindeu
+                                position: !lambda 'return int(x);'
+                  - label:
+                      x: 50
+                      align: LEFT_MID
+                      text: "\U000F1A2E"
+                      text_font: regular_40
+                  - label:
+                      x: -50
+                      align: RIGHT_MID
+                      text: "\U000F1A2D"
+                      text_font: regular_40
+                  - label:
+                      x: 0
+                      y: 50
+                      id: blind_all_slider_number
+                      align: CENTER
+                      text: "---%"
+                      text_font: weather_30
+                  - button:
+                      x: -180
+                      y: -70
+                      align: BOTTOM_MID
+                      width: 130
+                      height: 60                  
+                      id: all_open
+                      styles: blind_button_style
+                      widgets:
+                        - label:
+                            text: "\U000F084E"
+                            align: CENTER
+                            text_font: regular_40
+                      on_press:
+                        then:
+                          - homeassistant.action:
+                              action: cover.open_cover
+                              data: 
+                                entity_id: cover.beotikeol_beulraindeu 
+                  
+                  - button:
+                      x: 0
+                      y: -70
+                      align: BOTTOM_MID
+                      width: 130
+                      height: 60
+                      id: all_stop
+                      styles: blind_button_style
+                      widgets:
+                        - label:
+                            text: "\U000F04DB"
+                            align: CENTER
+                            text_font: regular_40
+                      on_press:
+                        then:
+                          - homeassistant.action:
+                              action: cover.stop_cover
+                              data: 
+                                entity_id: cover.beotikeol_beulraindeu 
+                  - button:
+                      x: 180
+                      y: -70
+                      align: BOTTOM_MID
+                      width: 130
+                      height: 60
+                      id: all_close
+                      styles: blind_button_style
+                      widgets:
+                        - label:
+                            text: "\U000F084C"
+                            align: CENTER
+                            text_font: regular_40
+                      on_press:
+                        then:
+                          - homeassistant.action:
+                              action: cover.close_cover
+                              data: 
+                                entity_id: cover.beotikeol_beulraindeu 
+
+                  - button:
+                      x: 10
+                      y: 10
+                      align: TOP_LEFT
+                      width: 100
+                      height: 50
+                      styles: card
+                      outline_width: 1
+                      widgets:
+                        - label:
+                            align: CENTER
+                            text: "< Back"
+                            text_font: regular_20
+                      on_press:
+                        then:
+                          - switch.turn_off: blind_sw
+
+#radio card
+            - button:
+                x: 0
+                y: 0
+                width: 696
+                height: 450
+                styles: card
+                id: radio_card
+                hidden: true
+                pad_all: 10
+                widgets:
+                  - label:
+                      x: -10
+                      y: 10
+                      align: TOP_RIGHT
+                      text: "FM Radio"
+                      text_font: regular_40
+                  - obj:
+                      y: -50
+                      height: 150
+                      width: 300
+                      align: CENTER
+                      styles: card                      
+                      widgets:
+                        - label:
+                            y: -40
+                            align: CENTER
+                            id: frequency_text
+                            text: ---.-
+                            text_align: RIGHT
+                            text_font: weather_60
+                        - label:
+                            x: 60
+                            align: CENTER
+                            text: "Mhz"
+                            text_font: weather_30
+                            text_color: 0xE5E5E5
+                            text_align: RIGHT
+                  - label: 
+                      x: 50
+                      y: 0                      
+                      text: "\U000F075E"
+                      text_font: regular_40
+                      text_color: 0xE5E5E5
+                      align: LEFT_MID
+                      on_click:
+                        then:
+                          - homeassistant.action:
+                              action: media_player.volume_set
+                              data: 
+                                entity_id: $media_player
+                                volume_level: !lambda 'return id(media_player_volume).state - 0.01;'
+                  
+                  - label: 
+                      x: -50
+                      y: 0
+                      text: "\U000F075D"
+                      text_font: regular_40
+                      text_color: 0xE5E5E5
+                      align: RIGHT_MID
+                      on_click:
+                        then:
+                          - homeassistant.action:
+                              action: media_player.volume_set
+                              data: 
+                                entity_id: $media_player
+                                volume_level: !lambda 'return id(media_player_volume).state + 0.01;'
+
+                  - slider:
+                      align: CENTER
+                      width: 65%
+                      height: 30
+                      id: set_volume
+                      min_value: 0
+                      max_value: 100
+                      on_release:
+                        then:
+                          - homeassistant.action:
+                              action: media_player.volume_set
+                              data: 
+                                entity_id: $media_player
+                                volume_level: !lambda 'return (x / 100);'
+                  - label:
+                      y: 50
+                      align: CENTER
+                      id: set_volume_text
+                      text: "Vol --%"
+                      text_font: weather_30
+                      text_color: 0xE5E5E5
+                
+                  - button:
+                      x: 150
+                      y: -70
+                      align: BOTTOM_LEFT
+                      width: 60
+                      height: 60
+                      styles: menu_button
+                      radius: 75
+                      outline_width: 1
+                      on_click:
+                        - select.previous:
+                            id: radio_select
+                            cycle: true
+                      widgets:
+                        - label:
+                            y: 5
+                            text: "\U000F04AE"
+                            align: CENTER
+                            text_font: regular_40
+                  - button:
+                      x: 50
+                      y: -70
+                      align: BOTTOM_MID
+                      width: 60
+                      height: 60
+                      styles: menu_button
+                      radius: 75                      
+                      outline_width: 1
+                      on_click:
+                        - homeassistant.action:
+                            action: media_player.media_stop
+                            data: 
+                              entity_id: $media_player 
+                      widgets:
+                        - label:
+                            y: 5
+                            text: "\U000F04DB"
+                            align: CENTER
+                            text_font: regular_40
+                  - button:
+                      x: -50
+                      y: -70
+                      id: media_player_mute
+                      align: BOTTOM_MID
+                      width: 60
+                      height: 60
+                      styles: menu_button
+                      checkable: true
+                      checked:
+                         styles: button_menu
+                         radius: 75
+                      radius: 75
+                      outline_width: 1
+                      on_click:
+                        - if:
+                            condition: 
+                              binary_sensor.is_off: media_player_is_volume_muted
+                            then:
+                              - homeassistant.action:
+                                  action: media_player.volume_mute
+                                  data:  
+                                    entity_id: $media_player
+                                    is_volume_muted: "true"
+                            else:
+                              - homeassistant.action:
+                                  action: media_player.volume_mute
+                                  data:  
+                                    entity_id: $media_player
+                                    is_volume_muted: "false"
+                      widgets:
+                        - label:
+                            y: 5
+                            text: "\U000F0581"
+                            id: media_player_mute_icon
+                            align: CENTER
+                            text_font: regular_40
+                  - button:
+                      x: -150
+                      y: -70
+                      align: BOTTOM_RIGHT
+                      width: 60
+                      height: 60
+                      styles: menu_button
+                      radius: 75
+                      outline_width: 1
+                      on_click:
+                        - select.next:
+                            id: radio_select
+                            cycle: true
+                      widgets:
+                        - label:
+                            y: 5
+                            text: "\U000F04AD"
+                            align: CENTER
+                            text_font: regular_40
+                  - button:
+                      x: 10
+                      y: 10
+                      align: TOP_LEFT
+                      width: 100
+                      height: 50
+                      styles: card
+                      outline_width: 1
+                      widgets:
+                        - label:
+                            align: CENTER
+                            text: "< Back"
+                            text_font: regular_20
+                      on_press:
+                        then:
+                          - switch.turn_off: radio_sw
+#energy card
+            - button:
+                x: 0
+                y: 0
+                width: 460
+                height: 450
+                styles: card
+                id: energy_card
+                hidden: true
+                pad_all: 10
+                widgets:
+                  - button:
+                      x: 10
+                      y: 10
+                      align: TOP_LEFT
+                      width: 100
+                      height: 50
+                      styles: card
+                      outline_width: 1
+                      widgets:
+                        - label:
+                            align: CENTER
+                            text: "< Back"
+                            text_font: regular_20
+                      on_press:
+                        then:
+                          - switch.turn_off: energy_sw
+                  - obj:
+                      align: CENTER
+                      styles: card
+                      pad_all: 10
+                      width: 95%
+                      height: 70%
+                      widgets:
+                        - label:
+                            text: "Today Used"
+                            x: 5
+                            y: 20
+                            align: TOP_LEFT
+                            text_align: CENTER
+                            text_font: regular_25
+                        - label:
+                            text: "--.-kWh"
+                            x: 5
+                            y: 65
+                            align: TOP_LEFT 
+                            id: today_kwh
+                            text_align: CENTER
+                            text_font: regular_25
+                        - bar:
+                            x: 0
+                            y: 65
+                            id: today_slider
+                            align: TOP_RIGHT
+                            width: 60%
+                            height: 30
+                            pad_all: 8
+                            min_value: 0
+                            max_value: 100
+                            indicator:
+                              width: 30
+                        - label:
+                            text: "Monthly Meter"
+                            x: 5
+                            align: LEFT_MID
+                            text_align: CENTER
+                            text_font: regular_25
+                        - label:
+                            text: "--.-kWh"
+                            x: 5
+                            y: 45
+                            align: LEFT_MID 
+                            id: monthly_value
+                            text_align: CENTER
+                            text_font: regular_25
+                        - bar:
+                            x: 0
+                            y: 45
+                            id: monthly_slider
+                            align: RIGHT_MID
+                            width: 60%
+                            height: 30
+                            pad_all: 8
+                            min_value: 0
+                            max_value: 4000
+                            indicator:
+                              width: 30
+                        - label:
+                            text: "Pre Monthly Meter"
+                            x: 5
+                            y: -45
+                            align: BOTTOM_LEFT
+                            text_align: CENTER
+                            text_font: regular_25
+                        - label:
+                            text: "-.--kWh"
+                            x: 5
+                            align: BOTTOM_LEFT
+                            id: pre_monthly_value
+                            text_align: CENTER
+                            text_font: regular_25                            
+                        - bar:
+                            x: 0
+                            id: pre_monthly_slider  
+                            align: BOTTOM_RIGHT
+                            width: 60%
+                            height: 30
+                            pad_all: 8
+                            min_value: 0
+                            max_value: 4000
+                            indicator:
+                              width: 30
+                  - label:
+                      x: -10
+                      y: 10
+                      align: TOP_RIGHT
+                      text: "Energy"
+                      text_font: regular_40
+
+
+            - button:
+                x: -102
+                y: 0
+                align: TOP_RIGHT
+                width: 233
+                height: 450
+                styles: card
+                hidden: true
+                pad_all: 15
+                id: meter_card
+                layout: 
+                  type: flex
+                  flex_flow: column
+                  flex_align_main: space_around
+                  flex_align_cross: center
+                  flex_align_track : space_around
+                widgets:
+                  - meter:
+                      x: 0
+                      y: 0
+                      width: 180
+                      height: 180
+                      border_width: 0
+                      bg_opa: TRANSP
+                      align: TOP_MID
+                      scales:
+                      # Now Grid consum
+                        - range_from: 0
+                          range_to: 40000
+                          angle_range: 250
+                          ticks:
+                            count: 0
+                          indicators:
+                            - line:
+                                id: grid_needle
+                                width: 8
+                                color: 0xE5E5E5
+                                r_mod: 18
+                                value: "0"
+                            - arc: 
+                                color: 0x005AC7
+                                r_mod: 10 
+                                width: 25
+                                start_value: 0
+                                end_value: 5000
+                            - arc: 
+                                color: 0x0088C7
+                                r_mod: 10
+                                width: 25
+                                start_value: 5001
+                                end_value: 10000
+                            - arc: 
+                                color: 0x11C700
+                                r_mod: 10
+                                width: 25
+                                start_value: 10001
+                                end_value: 15000
+                            - arc: 
+                                color: 0xFF8C00
+                                r_mod: 10
+                                width: 25
+                                start_value: 15001
+                                end_value: 25000
+                            - arc: 
+                                color: 0xFF0000
+                                r_mod: 10
+                                width: 25
+                                start_value: 25001
+                                end_value: 40000
+                      widgets:
+                        - obj:
+                            height: 115
+                            width: 115
+                            radius: 80
+                            align: CENTER
+                            border_width: 0
+                            bg_color: 0x222222
+                            pad_all: 0
+                        - label:
+                            x: 0
+                            y: -5
+                            align: CENTER
+                            text: "----"
+                            id: grid_in_text
+                            text_font: weather_30
+                            text_color: 0xE5E5E5
+                            text_align: CENTER
+                        - label:
+                            x: 0
+                            y: 30
+                            align: CENTER
+                            text: "W"
+                            text_font: weather_23
+                            text_color: 0xE5E5E5
+                            text_align: CENTER
+                        - label:
+                            x: 0
+                            y: 0
+                            align: BOTTOM_MID
+                            text: "Now"
+                            text_font: weather_23
+                            text_color: 0xE5E5E5
+                            text_align: CENTER
+                  - meter:
+                      x: 0
+                      y: 0
+                      width: 180
+                      height: 180
+                      border_width: 0
+                      bg_opa: TRANSP
+                      align: BOTTOM_MID
+                      scales:
+                        - range_from: 0
+                          range_to: 8000
+                          angle_range: 250
+                          ticks:
+                            count: 0
+                          indicators:
+                             - line:
+                                 id: monthly_needle
+                                 width: 8
+                                 color: 0xE5E5E5
+                                 r_mod: 18 
+                                 value: "0"
+                             - arc: 
+                                 color: 0x005AC7
+                                 r_mod: 10 
+                                 width: 25
+                                 start_value: 0
+                                 end_value: 2000
+                             - arc: 
+                                 color: 0x11C700
+                                 r_mod: 10
+                                 width: 25
+                                 start_value: 2000
+                                 end_value: 4000
+                             - arc: 
+                                 color: 0xFF8C00
+                                 r_mod: 10
+                                 width: 25
+                                 start_value: 4000
+                                 end_value: 6000
+                             - arc: 
+                                 color: 0xFF0000
+                                 r_mod: 10
+                                 width: 25
+                                 start_value: 6000
+                                 end_value: 8000
+
+                      widgets:
+                        - obj:
+                            height: 115
+                            width: 115
+                            radius: 80
+                            align: CENTER
+                            border_width: 0
+                            bg_color: 0x222222
+                            pad_all: 0
+                        - label:
+                            x: 0
+                            y: -5
+                            align: CENTER
+                            text: "----"
+                            id: monthly_in_text
+                            text_font: weather_30
+                            text_color: 0xE5E5E5
+                            text_align: CENTER
+                        - label:
+                            x: 0
+                            y: 30
+                            align: CENTER
+                            text: "kWh"
+                            text_font: weather_23
+                            text_color: 0xE5E5E5
+                            text_align: CENTER
+                        - label:
+                            x: 0
+                            y: 0
+                            align: BOTTOM_MID
+                            text: "Monthly"
+                            text_font: weather_23
+                            text_color: 0xE5E5E5
+                            text_align: CENTER
+                            
+
+#setting card
+            - button:
+                x: 0
+                y: 0
+                width: 696
+                height: 450
+                styles: card
+                id: setting_card
+                hidden: true
+                pad_all: 10
+                widgets:
+                  - tabview:
+                      id: setting_tab
+                      position: bottom
+                      styles: card
+                      radius: 20
+                      tab_style:
+                        styles: tab_style
+                        items:
+                          text_color: 0xE5E5E5
+                          height: 100%
+                          pressed:
+                            text_color: 0xE5E5E5
+                          checked: 
+                            text_color: 0xE5E5E5
+                      tabs:
+                        - name: "Display"
+                          id: display_tab
+                          widgets:
+                            - label:
+                                align: TOP_RIGHT
+                                text: "Display"
+                                text_align: RIGHT
+                                text_font: regular_40
+                            - obj:
+                                width: 30%
+                                height: 85%
+                                align: bottom_left
+                                styles: base_style
+                                pad_top: 20
+                                layout: 
+                                  type: flex
+                                  flex_flow: column
+                                  flex_align_main: START
+                                  flex_align_cross: START
+                                  flex_align_track : SPACE_EVENLY
+                                widgets:
+                                  - label:
+                                      width: 95%
+                                      height: 50
+                                      text: "Auto Brightness"
+                                      text_font: regular_25
+                                  - label:
+                                      width: 95%
+                                      height: 50
+                                      text: "Brightness"
+                                      text_font: regular_25
+                                  - label:
+                                      width: 95%
+                                      height: 50
+                                      text: "Return Home(S)"
+                                      text_font: regular_25
+                                  - label:
+                                      width: 95%
+                                      height: 50
+                                      text: "Screen Off(S)"
+                                      text_font: regular_25
+                                
+                            - obj:
+                                width: 70%
+                                height: 85%
+                                align: bottom_right
+                                styles: base_style
+                                pad_top: 10
+                                layout: 
+                                  type: flex
+                                  flex_flow: column
+                                  flex_align_main: START
+                                  flex_align_cross: END
+                                  flex_align_track : SPACE_EVENLY
+                                widgets:
+                                  - obj:
+                                      width: 95%
+                                      height: 50
+                                      styles: base_style
+                                      widgets:
+                                        - switch:
+                                            width: 70
+                                            height: 35
+                                            align: RIGHT_MID
+                                            id: switch_auto_bright
+                                            on_click:
+                                              - if:
+                                                  condition:
+                                                    switch.is_off: auto_brightness
+                                                  then:
+                                                    switch.turn_on: auto_brightness
+                                                  else:
+                                                    switch.turn_off: auto_brightness
+                                  - obj:
+                                      width: 95%
+                                      height: 50
+                                      styles: base_style
+                                      widgets:
+                                        - label:
+                                            text: "0"
+                                            align: LEFT_MID
+                                            text_font: regular_25
+                                        - slider:
+                                            id: slide_brightness
+                                            width: 75%
+                                            height: 20
+                                            align: CENTER
+                                            value: !lambda return id(backlight_brightness).state;
+                                            pad_all: 2
+                                            min_value: 5
+                                            max_value: 100
+                                            indicator:
+                                              bg_color: 0x003866
+                                              bg_grad_color: 0x4adeff
+                                              bg_grad_dir: HOR
+                                              bg_opa: COVER
+                                              height: 20
+                                            on_release:
+                                              then:
+                                                - number.set:
+                                                    id: backlight_brightness
+                                                    value: !lambda return x;
+                                        - label:
+                                            text: "100"
+                                            align: RIGHT_MID
+                                            text_font: regular_25
+                                  - obj:
+                                      align: TOP_RIGHT
+                                      width: 95%
+                                      height: 50
+                                      styles: base_style
+                                      text_font: regular_25
+                                      layout:
+                                        type: FLEX
+                                        flex_flow: ROW
+                                        flex_align_main: END
+                                        flex_align_cross: CENTER
+                                      widgets:                           
+                                        - button:
+                                            height: 45
+                                            width: 45
+                                            styles: menu_button
+                                            on_click:
+                                              - lvgl.spinbox.decrement: return_spin
+                                            widgets:
+                                              - label:
+                                                  text: "-"
+                                                  align: CENTER
+                                        - spinbox:
+                                            width: 80
+                                            height: 45
+                                            id: return_spin
+                                            text_font: regular_20
+                                            text_align: CENTER
+                                            range_from: 10
+                                            range_to: 300
+                                            step: 5
+                                            value: 30
+                                            rollover: false                                
+                                            digits: 3
+                                            decimal_places: 0                                
+  
+                                        - button:
+                                            height: 45
+                                            width: 45
+                                            styles: menu_button
+                                            on_click:
+                                              - lvgl.spinbox.increment: return_spin
+                                            widgets:
+                                              - label:
+                                                  text: "+"
+                                                  align: CENTER
+                                  
+
+                                  - obj:
+                                      align: TOP_RIGHT
+                                      width: 95%
+                                      height: 50
+                                      styles: base_style
+                                      text_font: regular_25
+                                      layout:
+                                        type: FLEX
+                                        flex_flow: ROW
+                                        flex_align_main: END
+                                      widgets:                           
+                                        - button:
+                                            height: 45
+                                            width: 45
+                                            styles: menu_button
+                                            on_click:
+                                              - lvgl.spinbox.decrement: idle_spin
+                                            widgets:
+                                              - label:
+                                                  text: "-"
+                                                  align: CENTER
+                                        - spinbox:
+                                            width: 80
+                                            height: 45
+                                            id: idle_spin                                            
+                                            text_align: CENTER
+                                            text_font: regular_20
+                                            range_from: 10
+                                            range_to: 300
+                                            step: 5
+                                            value: 120
+                                            rollover: false                                
+                                            digits: 3
+                                            decimal_places: 0                                
+      
+                                        - button:
+                                            height: 45
+                                            width: 45
+                                            styles: menu_button
+                                            on_click:
+                                              - lvgl.spinbox.increment: idle_spin
+                                            widgets:
+                                              - label:
+                                                  text: "+"
+                                                  align: CENTER
+
+                  - button:
+                      x: 10
+                      y: 10
+                      align: TOP_LEFT
+                      width: 100
+                      height: 50
+                      styles: card
+                      outline_width: 1
+                      widgets:
+                        - label:
+                            align: CENTER
+                            text: "< Back"
+                            text_font: regular_20
+                      on_press:
+                        then:
+                          - switch.turn_off: setting_sw

@@ -1,0 +1,76 @@
+sensor:
+# HA Energy Sensor
+  - platform: homeassistant
+    entity_id: $energy_meter
+    id: energy_meter_power
+    accuracy_decimals: 1          
+    on_value:
+      - if:
+          condition:
+            - lambda: return id(energy_meter_power).state >= 2000;
+          then:
+            - switch.turn_on: energy_sw
+      - lvgl.label.update:
+          id: energy_meter_power_title
+          text:
+            format: "\U000F192C %.1fW"
+            args: [ 'x' ]
+      - lvgl.indicator.update:
+          id: grid_needle
+          value: !lambda return x * 10;
+      - lvgl.label.update:
+          id: grid_in_text
+          text:
+            format: "%.1f"
+            args: [ 'x' ]
+
+  - platform: homeassistant
+    entity_id: $daily_meter
+    id: energy_meter_daily
+    accuracy_decimals: 2
+    on_value:
+      - lvgl.label.update:
+          id: today_kwh
+          text:
+            format: "%.1fkWh"
+            args: [ 'x' ]    
+      - lvgl.bar.update:
+          id: today_slider
+          value: !lambda return x * 10;
+
+  - platform: homeassistant
+    entity_id: $monthly
+    id: monthly_energy
+    accuracy_decimals: 1 
+    on_value: 
+      then:        
+        - lvgl.bar.update:
+            id: monthly_slider
+            value: !lambda return x * 10;
+        - lvgl.indicator.update:
+            id: monthly_needle
+            value: !lambda return x * 10;
+        - lvgl.label.update:
+            id: monthly_value
+            text:
+              format: "%.1f kWh"
+              args: [ 'x' ]
+        - lvgl.label.update:
+            id: monthly_in_text
+            text:
+              format: "%.1f"
+              args: [ 'x' ]
+  - platform: homeassistant
+    entity_id: $prev_monthly
+    id: energy_prev_monthly
+    accuracy_decimals: 1
+    on_value: 
+      then:        
+        - lvgl.bar.update:
+            id: pre_monthly_slider
+            value: !lambda return x * 10;
+        - lvgl.label.update:
+            id: pre_monthly_value
+            text:
+              format: "%.1f kWh"
+              args: [ 'x' ]
