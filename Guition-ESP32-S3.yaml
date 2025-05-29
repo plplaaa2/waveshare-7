@@ -136,16 +136,6 @@ wifi:
 
 #captive_portal:
 
-i2c:
-  scl: GPIO20
-  sda: GPIO19
-  scan: True
-
-#uart:
- # tx_pin: GPIO43
-  #rx_pin: GPIO44
-  #baud_rate: 9600
-
 packages:
   # base
   display: !include craft_800/waveshare-800.yaml  
