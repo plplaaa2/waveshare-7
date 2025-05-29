@@ -1,4 +1,4 @@
-# waveshare ESP32 S3 N8R8 LCD 7 or Guition ESP32 8048S070**
+# waveshare ESP32 S3 N8R8 LCD 7 or Guition ESP32 8048S070
 
 This is not for everyone, it's optimized for personal use, but a source I share to refer to.
 
