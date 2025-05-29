@@ -1,5 +1,8 @@
 # waveshare ESP32 S3 N8R8 LCD 7 or Guition ESP32 8048S070
 
+![image](https://github.com/user-attachments/assets/46babe10-48d7-4d5e-8e67-0895957cafc8)
+
+
 This is not for everyone, it's optimized for personal use, but a source I share to refer to.
 
 # waveshare ESP32 S3 N8R8 LCD 7 LCD Brightness Wire
