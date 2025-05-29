@@ -214,11 +214,6 @@ lvgl:
                         align: BOTTOM_RIGHT 
                         text_align: right
                     - label:
-                        text: "\U000F1A73 0 W"
-                        id: solar_power_title
-                        align: BOTTOM_RIGHT             
-                        text_align: right
-                    - label:
                         text: "HA"
                         id: ha_connected_title
                         hidden: true
