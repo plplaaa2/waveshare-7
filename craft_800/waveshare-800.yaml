@@ -60,8 +60,8 @@ touchscreen:
     - script.execute: light_up
 
 i2c:
-  scl: GPIO20
-  sda: GPIO19
+  scl: GPIO9
+  sda: GPIO8
   scan: True
     
 light:
