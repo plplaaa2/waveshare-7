@@ -148,22 +148,22 @@ i2c:
 
 packages:
   # base
-  display: !include lvgl/craft_800/waveshare-800.yaml  
+  display: !include craft_800/waveshare-800.yaml  
   # Lvgl  
-  style: !include lvgl/craft_800/styles-800.yaml
-  font: !include lvgl/craft_800/fonts-800.yaml
-  image: !include lvgl/weather-img.yaml
-  setting: !include lvgl/craft_800/setting-800.yaml
+  style: !include craft_800/styles-800.yaml
+  font: !include craft_800/fonts-800.yaml
+  image: !include craft_800/weather-img.yaml
+  setting: !include craft_800/setting-800.yaml
   # Sensors  
-  naver: !include lvgl/craft_800/naver-800.yaml
-  indoor: !include lvgl/craft_800/indoor-800.yaml  
-  energy: !include lvgl/craft_800/energy-800.yaml
+  naver: !include craft_800/naver-800.yaml
+  indoor: !include craft_800/indoor-800.yaml  
+  energy: !include craft_800/energy-800.yaml
   # Devices
-  aircon: !include lvgl/craft_800/aircon-800.yaml
-  blind: !include lvgl/craft_800/blind-800.yaml
-  radio: !include lvgl/craft_800/radio_800.yaml  
+  aircon: !include craft_800/aircon-800.yaml
+  blind: !include craft_800/blind-800.yaml
+  radio: !include craft_800/radio_800.yaml  
   # pages
-  main: !include lvgl/craft_800/main_page_800.yaml  
+  main: !include craft_800/main_page_800.yaml  
 
 
 
