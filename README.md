@@ -48,7 +48,7 @@ substitutions:
 #font setting
   characters: " !#%'()+,-./0123456789:;<>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[]_abcdefghijklmnopqrstuvwxyz{|}°²³µ"
 
- #Radio channel, For Korea User, If you want to edit channel names. you can change the radio-480.yaml
+ #Radio channel, For Korea User, If you want to edit channel names. you can change the yaml
   kbscool: "http://yourip:3005/radio?keys=kbs_cool&token=homeassistant&atype=1"
   itv: "http://yourip:305/radio?keys=ifm&token=homeassistant&atype=1"
   mbcfm4u: "http://yourip:3005/radio?keys=mbc_fm4u&token=homeassistant&atype=1"
