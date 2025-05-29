@@ -1169,7 +1169,7 @@ lvgl:
                       x: -10
                       y: 10
                       align: TOP_RIGHT
-                      text: "LV Blind"
+                      text: "Blind"
                       text_align: RIGHT
                       text_font: regular_40
                   - label:
