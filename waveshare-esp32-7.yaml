@@ -1,0 +1,689 @@
+substitutions:
+# Device setting  
+  board: esp32-s3-devkitc-1
+  name: "esphome-craft-800"
+  comment: ESPhome Craft 800
+  type: esp-idf  
+  latitude: "37"    
+  longitude: "126"   
+  font: gfonts://Roboto
+
+# Device entities:
+  climate: your_device_entity
+  media_player: your_device_entity
+  blind: your_device_entity
+# indoor sensors
+  temperature: your_sensor_entity
+  humidity: your_sensor_entity
+  pm2_5: your_sensor_entity
+  tvoc: your_sensor_entity
+  co2: your_sensor_entity
+  illuminance: your_sensor_entity
+  presence: your_sensor_entity
+# energy entities:
+  energy_meter: your_sensor_entity
+  daily_meter: your_sensor_entity
+  monthly: your_sensor_entity
+  prev_monthly: your_sensor_entity
+
+#font setting
+  #allowed_characters: " !#%'()+,-./0123456789:;<>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[]_abcdefghijklmnopqrstuvwxyz{|}°²³µ오전후시분초월화수목금토일맑음흐림비뇌우안개폭호구름많동서남북알없매좋높보통쾌적아주나쁨최악눈내위험자외선존미세먼지풍데이터온습도낮양감건함재실거장좌측에어컨생블라인드버티컬냉난방설정기디러너소사용량당현관중창문상태광발모단은켜꺼짐다닫힘열면밝절복귀출패턴하브리환"
+  characters: " !#%'()+,-./0123456789:;<>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[]_abcdefghijklmnopqrstuvwxyz{|}°²³µ"
+
+ #Radio channel, For Korea User, If you want to edit channel names. you can change the radio-480.yaml
+  kbscool: "http://yourip:3005/radio?keys=kbs_cool&token=homeassistant&atype=1"
+  itv: "http://yourip:305/radio?keys=ifm&token=homeassistant&atype=1"
+  mbcfm4u: "http://yourip:3005/radio?keys=mbc_fm4u&token=homeassistant&atype=1"
+  KBSClassic: "http://yourip:3005/radio?keys=kbs_1radio&token=homeassistant&atype=1"
+  CBSMusic: "http://yourip:3005/radio?keys=cbs_fm&token=homeassistant&atype=1"
+  YTN: "http://yourip:3005/radio?keys=ytn&token=homeassistant&atype=1"
+  TBS: "http://yourip:3005/radio?keys=tbsfm&token=homeassistant&atype=1"
+  MBCFM: "http://yourip:3005/radio?keys=mbc_fm&token=homeassistant&atype=1"
+  KBS1FM: "http://yourip:3005/radio?keys=kbs_1radio&token=homeassistant&atype=1"
+  CBSFM: "http://yourip:3005/radio?keys=cbs_fm&token=homeassistant&atype=1"
+  TBN: "http://yourip:3005/radio?keys=tbnfm&token=homeassistant&atype=1"
+  SBSLoveFM: "http://yourip:3005/radio?keys=mbc_fm&token=homeassistant&atype=1"
+  EBSFM: "http://yourip:3005/radio?keys=ebsfm&token=homeassistant&atype=1"
+  KBS3FM: "http://yourip:3005/radio?keys=kbs_3radio&token=homeassistant&atype=1"
+  KBSHappyFM: "http://yourip:3005/radio?keys=kbs_happy&token=homeassistant&atype=1"
+  SBSPowerFM: "http://yourip:3005/radio?keys=sbs_power&token=homeassistant&atype=1"
+
+esphome:
+  name: "${name}"
+  comment: "${comment}"
+  platformio_options:
+    board_build.arduino.memory_type: qio_opi
+    board_build.flash_mode: dio
+
+  on_boot: 
+    then:
+      - script.execute: light_up
+        
+esp32:
+  board: ${board}
+  flash_size: 8MB
+  framework:
+    type: esp-idf  
+    #version: 4.4.8
+    #platform_version: 5.4.0
+    sdkconfig_options:
+      COMPILER_OPTIMIZATION_SIZE: "y"
+      CONFIG_ESP32S3_DEFAULT_CPU_FREQ_240: "y"
+      CONFIG_ESP32S3_DATA_CACHE_64KB: "y"
+      CONFIG_ESP32S3_DATA_CACHE_LINE_64B: "y"
+      CONFIG_SPIRAM_FETCH_INSTRUCTIONS: "y"
+      CONFIG_SPIRAM_RODATA: "y"
+    advanced:
+      enable_idf_experimental_features: true
+
+psram:
+  mode: octal
+  speed: 120MHz
+
+# Enable logging
+logger:
+  level: INFO
+  #baud_rate: 0
+
+# Enable Home Assistant API
+api:
+  encryption:
+    key: !secret api_key
+  on_client_connected:
+    - if:
+        condition:
+          - lambda: 'return (0 == client_info.find("Home Assistant "));'
+        then:
+          - lvgl.widget.show: ha_connected_title
+          
+  on_client_disconnected:
+    - if:
+        condition:
+          lambda: 'return (0 == client_info.find("Home Assistant "));'
+        then:
+          - lvgl.widget.hide: ha_connected_title
+
+ota:
+  - platform: esphome
+    password: !secret hotspot_pw
+
+wifi:
+  id: iptime
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+  #power_save_mode: HIGH
+  fast_connect: true
+  #manual_ip: 
+   #static_ip: $s_ip
+   #gateway: 192.168.1.1
+   #subnet: 255.255.255.0
+   #dns1: 1.1.1.1
+   #dns2: 8.8.8.8
+  on_connect:
+    - lvgl.label.update:
+        id: wifi_icon
+        text: "\U000F05A9"
+  on_disconnect:
+    - lvgl.label.update:
+        id: wifi_icon
+        text: "\U000F16C5"
+
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "${name} hotspot"
+    password: !secret hotspot_pw
+
+#captive_portal:
+
+i2c:
+  scl: GPIO20
+  sda: GPIO19
+  scan: True
+
+#uart:
+ # tx_pin: GPIO43
+  #rx_pin: GPIO44
+  #baud_rate: 9600
+
+packages:
+  # base
+  display: !include lvgl/craft_800/waveshare-800.yaml  
+  # Lvgl  
+  style: !include lvgl/craft_800/styles-800.yaml
+  font: !include lvgl/craft_800/fonts-800.yaml
+  image: !include lvgl/weather-img.yaml
+  setting: !include lvgl/craft_800/setting-800.yaml
+  # Sensors  
+  naver: !include lvgl/craft_800/naver-800.yaml
+  indoor: !include lvgl/craft_800/indoor-800.yaml  
+  energy: !include lvgl/craft_800/energy-800.yaml
+  # Devices
+  aircon: !include lvgl/craft_800/aircon-800.yaml
+  blind: !include lvgl/craft_800/blind-800.yaml
+  radio: !include lvgl/craft_800/radio_800.yaml  
+  # pages
+  main: !include lvgl/craft_800/main_page_800.yaml  
+
+
+
+time:
+  - platform: sntp
+    id: time_comp
+    timezone: UTC-9
+     - time.bora.net
+     - time.windows.com
+    on_time_sync:
+      - script.execute: time_update
+      - script.execute: date_update
+    on_time:
+      - minutes: '*'
+        seconds: '0'
+        then:
+          - script.execute: time_update
+          - script.execute: date_update
+debug:
+  update_interval: 5s
+
+sun:
+  id: sun_time
+  latitude: $latitude     
+  longitude: $longitude 
+
+button:    
+  - platform: restart
+    name: "${name} Restart"
+    id: re_start
+    entity_category: diagnostic
+
+text_sensor:
+  - platform: version
+    name: "${name} Esphome Version"
+  - platform: wifi_info
+    ip_address:
+     name: ESP IP Address
+
+# sun rise/set
+  - platform: sun
+    name: Sun Rise
+    id: sun_rise
+    type: sunrise
+    internal: True
+    on_value:
+      - lvgl.label.update:
+          id: home_weather_sunrise
+          text: 
+            format: "#FFA500 \U000F059C# %s"
+            args: [ x.c_str() ]
+            
+  - platform: sun
+    name: Sun set
+    id: sun_set
+    type: sunset
+    internal: True
+    on_value:
+      - lvgl.label.update:
+          id: home_weather_sunset
+          text: 
+            format: "%s #FF0000 \U000F059B#"
+            args: [ x.c_str() ]          
+
+binary_sensor:
+  - platform: status
+    name: "${name} Connection Status"
+
+sensor:
+  - platform: wifi_signal # Reports the WiFi signal strength/RSSI in dB
+    name: "WiFi Signal dB"
+    id: wifi_signal_db
+    internal: true
+    entity_category: "diagnostic"
+
+  - platform: copy # Reports the WiFi signal strength in %
+    source_id: wifi_signal_db
+    name: "${name} WiFi Signal Percent"
+    filters:
+      - lambda: return min(max(2 * (x + 100.0), 0.0), 100.0);
+    unit_of_measurement: "Signal %"
+    entity_category: "diagnostic"
+    device_class: ""
+    icon: mdi:wifi
+  # Free memory info
+  - platform: debug
+    free:
+      name: "Heap Free"
+    psram:
+      name: "Free PSRAM"  
+
+script:
+# Time update  
+  - id: time_update
+    then:
+      - lvgl.label.update:
+          id: title_time
+          text: !lambda |-
+            static char time_buf[17];
+            auto now = id(time_comp).now();
+            bool is_pm = now.hour >= 12;
+            int hour_12 = now.hour % 12;
+            if (hour_12 == 0) {
+                hour_12 = 12; // 12 AM/PM should be displayed as 12, not 0
+            }
+            snprintf(time_buf, sizeof(time_buf), "%s %2d:%02d", is_pm ? "PM" : "AM", hour_12, now.minute );
+            return time_buf;      
+
+  - id: date_update
+    then:
+      - lvgl.label.update:
+          id: title_date
+          text: !lambda |-
+            static char date_buf[30];
+            auto now = id(time_comp).now();
+            const char* weekdays[] = {"SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"};
+            snprintf(date_buf, sizeof(date_buf), "%04d-%02d-%02d (%s)", now.year, now.month, now.day_of_month, weekdays[now.day_of_week - 1]);
+            return date_buf;
+# weather on/off
+  - id: show_weather
+    then:
+      - lvgl.widget.show: weather_card
+      - lvgl.widget.show: air_quality_card
+      - lvgl.widget.show: temp_card
+      - script.execute: weather_img
+  - id: hide_weather
+    then:
+      - lvgl.image.update:
+          id: home_weather_icon
+          src: blank
+      - if:
+          condition:            
+              - switch.is_on: climate_sw              
+          then:
+              - lvgl.widget.hide: weather_card
+              - lvgl.widget.hide: air_quality_card
+          else:
+              - lvgl.widget.hide: weather_card
+              - lvgl.widget.hide: air_quality_card
+              - lvgl.widget.hide: temp_card
+  - id: hide_all_card 
+    then:
+      - switch.turn_off: climate_sw      
+      - switch.turn_off: blind_sw
+      - switch.turn_off: radio_sw      
+      - switch.turn_off: energy_sw
+      - switch.turn_off: setting_sw
+
+# radio selector, If you want to edit channel names,
+select:
+  - platform: template
+    id: radio_select
+    name: "Radio Channel"
+    options:
+      - KBS COOL
+      - ITV
+      - MBC FM4U
+      - KBS CLASSIC
+      - CBS MUSIC
+      - YTN
+      - TBS
+      - MBC FM
+      - KBS 1
+      - CBS FM
+      - TBN
+      - SBS LOVE
+      - KBS HAPPY
+      - KBS 3
+      - EBS FM
+      - SBS POWER
+    optimistic: true
+    on_value:
+      - if:
+          condition:
+            lambda: 'return (id(radio_select).state == "KBS COOL");'
+          then:
+            - homeassistant.action:
+                action: media_player.play_media
+                data: 
+                  entity_id: $media_player
+                  media_content_id: $kbscool
+                  media_content_type: music
+            - lvgl.label.update:
+                id: frequency_text
+                text: "89.1"
+      - if:
+          condition:
+            lambda: 'return (id(radio_select).state == "ITV");'
+          then:
+            - homeassistant.action:
+                action: media_player.play_media
+                data:  
+                  entity_id: $media_player
+                  media_content_id: $itv
+                  media_content_type: music
+            - lvgl.label.update:
+                id: frequency_text
+                text: "90.7"
+      - if:
+          condition:
+            lambda: 'return (id(radio_select).state == "MBC FM4U");'
+          then:
+            - homeassistant.action:
+                action: media_player.play_media
+                data:  
+                  entity_id: $media_player
+                  media_content_id: $mbcfm4u
+                  media_content_type: music
+            - lvgl.label.update:
+                id: frequency_text
+                text: "91.9"
+
+      - if:
+          condition:
+            lambda: 'return (id(radio_select).state == "KBS CLASSIC");'
+          then:
+            - homeassistant.action:
+                action: media_player.play_media
+                data:  
+                  entity_id: $media_player
+                  media_content_id: $KBSClassic
+                  media_content_type: music
+            - lvgl.label.update:
+                id: frequency_text
+                text: "93.1"
+      - if:
+          condition:
+            lambda: 'return (id(radio_select).state == "CBS MUSIC");'
+          then:
+            - homeassistant.action:
+                action: media_player.play_media
+                data:  
+                  entity_id: $media_player
+                  media_content_id: ${CBSMusic}
+                  media_content_type: music
+            - lvgl.label.update:
+                id: frequency_text
+                text: "93.9"
+      - if:
+          condition:
+            lambda: 'return (id(radio_select).state == "YTN");'
+          then:
+            - homeassistant.action:
+                action: media_player.play_media
+                data:  
+                  entity_id: $media_player
+                  media_content_id: $YTN
+                  media_content_type: music
+            - lvgl.label.update:
+                id: frequency_text
+                text: "94.5"
+      - if:
+          condition:
+            lambda: 'return (id(radio_select).state == "TBS");'
+          then:
+            - homeassistant.action:
+                action: media_player.play_media
+                data:  
+                  entity_id: $media_player
+                  media_content_id: $TBS
+                  media_content_type: music
+            - lvgl.label.update:
+                id: frequency_text
+                text: "95.1"
+      - if:
+          condition:
+            lambda: 'return (id(radio_select).state == "MBC FM");'
+          then:
+            - homeassistant.action:
+                action: media_player.play_media
+                data:  
+                  entity_id: $media_player
+                  media_content_id: $MBCFM
+                  media_content_type: music
+            - lvgl.label.update:
+                id: frequency_text
+                text: "95.9"
+      - if:
+          condition:
+            lambda: 'return (id(radio_select).state == "KBS 1");'
+          then:
+            - homeassistant.action:
+                action: media_player.play_media
+                data:  
+                  entity_id: $media_player
+                  media_content_id: $KBS1FM
+                  media_content_type: music
+            - lvgl.label.update:
+                id: frequency_text
+                text: "97.3"
+      - if:
+          condition:
+            lambda: 'return (id(radio_select).state == "CBS FM");'
+          then:
+            - homeassistant.action:
+                action: media_player.play_media
+                data:  
+                  entity_id: $media_player
+                  media_content_id: $CBSFM
+                  media_content_type: music
+            - lvgl.label.update:
+                id: frequency_text
+                text: "99.9"
+      - if:
+          condition:
+            lambda: 'return (id(radio_select).state == "TBN");'
+          then:
+            - homeassistant.action:
+                action: media_player.play_media
+                data:  
+                  entity_id: $media_player
+                  media_content_id: $TBN
+                  media_content_type: music
+            - lvgl.label.update:
+                id: frequency_text
+                text: "100.5"
+      - if:
+          condition:
+            lambda: 'return (id(radio_select).state == "SBS LOVE");'
+          then:
+            - homeassistant.action:
+                action: media_player.play_media
+                data:
+                  entity_id: $media_player
+                  media_content_id: $SBSLoveFM
+                  media_content_type: music
+            - lvgl.label.update:
+                id: frequency_text
+                text: "103.5"
+      - if:
+          condition:
+            lambda: 'return (id(radio_select).state == "KBS HAPPY");'
+          then:
+            - homeassistant.action:
+                action: media_player.play_media
+                data:  
+                  entity_id: $media_player
+                  media_content_id: $KBSHappyFM
+                  media_content_type: music
+            - lvgl.label.update:
+                id: frequency_text
+                text: "104.5"
+      - if:
+          condition:
+            lambda: 'return (id(radio_select).state == "KBS 3");'
+          then:
+            - homeassistant.action:
+                action: media_player.play_media
+                data:  
+                  entity_id: $media_player
+                  media_content_id: $KBS3FM
+                  media_content_type: music
+            - lvgl.label.update:
+                id: frequency_text
+                text: "104.9"
+      - if:
+          condition:
+            lambda: 'return (id(radio_select).state == "EBS FM");'
+          then:
+            - homeassistant.action:
+                action: media_player.play_media
+                data:  
+                  entity_id: $media_player
+                  media_content_id: $EBSFM
+                  media_content_type: music
+            - lvgl.label.update:
+                id: frequency_text
+                text: "106.1"
+      - if:
+          condition:
+            lambda: 'return (id(radio_select).state == "SBS POWER");'
+          then:
+            - homeassistant.action:
+                action: media_player.play_media
+                data:  
+                  entity_id: $media_player
+                  media_content_id: $SBSPowerFM
+                  media_content_type: music
+            - lvgl.label.update:
+                id: frequency_text
+                text: "107.7"
+
+# LVGL CORE
+lvgl:
+  displays: 
+    - my_display
+  touchscreens:
+    - my_touchscreen
+  log_level: DEBUG
+# Base Style 
+  bg_color: 0
+  text_font: regular_25
+  align: center
+# LVGL idle Automaition
+  on_idle:
+    - timeout: !lambda return id(return_timeout).state * 1000;
+      then:
+        if: 
+          condition:
+            - light.is_on: backlight
+          then:
+            - script.execute: show_weather
+    - timeout: !lambda return id(screen_timeout).state * 1000;
+      then:
+        if:
+          condition:
+            and:
+              - light.is_on: backlight
+              - binary_sensor.is_off: presence_sensor
+          then:
+            - light.turn_off: backlight
+# Title
+  top_layer:
+    widgets: 
+# Menu button
+            - obj:
+                x: 0
+                y: 30
+                align: TOP_RIGHT
+                width: 100
+                height: 450
+                styles: base_style
+                pad_all: 0
+                layout: 
+                  type: flex
+                  flex_flow: column
+                  flex_align_main: center
+                  flex_align_cross: center
+                  flex_align_track : center
+                widgets:
+                  - button:
+                      width: 95
+                      height: 83
+                      styles: card
+                      pad_all: 8
+                      id: climate_button
+                      checkable: true
+                      checked:
+                        styles: button_checked
+                      widgets:
+                       - label:                                
+                           align: TOP_MID
+                           text: "\U000F0F54"    
+                           text_font: regular_40
+                       - label:
+                           align: BOTTOM_MID
+                           text: "Climate"
+                           text_font: regular_20
+                  - button:
+                      width: 95
+                      height: 83
+                      styles: card
+                      pad_all: 8
+                      id: blind_button
+                      checkable: true
+                      checked:
+                        styles: button_checked
+                      widgets:
+                       - label:                                
+                           align: TOP_MID
+                           text: "\U000F1A2D"    
+                           text_font: regular_40
+                       - label:
+                           align: BOTTOM_MID
+                           text: "Blind"
+                           text_font: regular_20
+                  - button:
+                      width: 95
+                      height: 83
+                      styles: card
+                      id: radio_button
+                      pad_all: 8
+                      checkable: true
+                      checked:
+                        styles: button_checked
+                      widgets:
+                       - label:                                
+                           align: TOP_MID
+                           text: "\U000F0439"    
+                           text_font: regular_40
+                       - label:
+                           y: -2
+                           align: BOTTOM_MID
+                           text: "Radio"
+                           text_font: regular_20
+                  - button:
+                      width: 95
+                      height: 83
+                      styles: card
+                      id: energy_button                      
+                      pad_all: 8
+                      checkable: true
+                      checked:
+                        styles: button_checked
+                      widgets:
+                       - label:                                
+                           align: TOP_MID
+                           text: "\U000F1A57"    
+                           text_font: regular_40
+                       - label:
+                           y: -2
+                           align: BOTTOM_MID
+                           text: "Energy"
+                           text_font: regular_20
+                  - button:
+                      width: 95
+                      height: 83
+                      styles: card
+                      pad_all: 8
+                      id: setting_button
+                      checkable: true
+                      checked:
+                        styles: button_checked
+                      widgets:
+                       - label:                                
+                           align: TOP_MID
+                           text: "\U000F0493"    
+                           text_font: regular_40
+                       - label:
+                           y: -2
+                           align: BOTTOM_MID
+                           text: "Setting"
+                           text_font: regular_20
