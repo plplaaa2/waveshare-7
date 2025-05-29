@@ -58,6 +58,11 @@ touchscreen:
               touch.y_raw
               );
     - script.execute: light_up
+
+i2c:
+  scl: GPIO20
+  sda: GPIO19
+  scan: True
     
 light:
   - platform: monochromatic
