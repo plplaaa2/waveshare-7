@@ -7,7 +7,7 @@ And if it is necessary to adjust the backlight brightness, it can be adjusted by
 
 ![image](https://github.com/user-attachments/assets/feae9bb1-c0bd-4d50-bc0a-b0f707b64af7)
 
-This is a sample video.
+# Sample Video
 
 [https://www.youtube.com/shorts/WfNRwrhKC6Q?feature=share](https://www.youtube.com/shorts/sdezhiXci4w)
 
