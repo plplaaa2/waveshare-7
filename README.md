@@ -1,4 +1,6 @@
-# Dashboard for waveshare ESP32 S3 N8R8 LCD 7 or Guition ESP32 8048S070 
+# ESPhome Craft LVGL 800
+
+**Dashboard for waveshare ESP32 S3 N8R8 LCD 7 or Guition ESP32 8048S070 **
 
 ![image](https://github.com/user-attachments/assets/46babe10-48d7-4d5e-8e67-0895957cafc8)
 
