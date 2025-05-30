@@ -2,7 +2,16 @@
 
 **Dashboard for waveshare ESP32 S3 N8R8 LCD 7 and Guition ESP32 8048S070**
 
-![image](https://github.com/user-attachments/assets/46babe10-48d7-4d5e-8e67-0895957cafc8)
+![image](https://github.com/user-attachments/assets/a9315adf-f3ac-48d0-a87d-aa4b253453d7)
+
+![image](https://github.com/user-attachments/assets/54d7f8a8-cc59-44cc-ab97-02e12d13f987)
+
+![image](https://github.com/user-attachments/assets/68d18ae2-5453-4abe-a373-b7e0da132d47)
+
+![image](https://github.com/user-attachments/assets/ea657fff-211a-4112-9979-1a964433d5d1)
+
+![image](https://github.com/user-attachments/assets/34740547-f88d-4b9b-9b19-857ff3caa894)
+
 
 This is not for everyone, it's optimized for personal use, but a source I share to refer to.
 
