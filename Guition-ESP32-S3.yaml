@@ -18,8 +18,8 @@ substitutions:
   pm2_5: your_sensor_entity
   tvoc: your_sensor_entity
   co2: your_sensor_entity
-  illuminance: your_sensor_entity
-  presence: your_sensor_entity
+  illuminance: your_sensor_entity  #This entity automatically adjusts the screen brightness.
+  presence: your_sensor_entity   #This entity is used to turn the screen on and off
 # energy entities:
   energy_meter: your_sensor_entity
   daily_meter: your_sensor_entity
@@ -136,13 +136,23 @@ wifi:
 
 #captive_portal:
 
+i2c:
+  scl: GPIO20
+  sda: GPIO19
+  scan: True
+
+#uart:
+ # tx_pin: GPIO43
+  #rx_pin: GPIO44
+  #baud_rate: 9600
+
 packages:
   # base
-  display: !include craft_800/waveshare-800.yaml  
+  display: !include craft_800/guition-800.yaml  
   # Lvgl  
   style: !include craft_800/styles-800.yaml
   font: !include craft_800/fonts-800.yaml
-  image: !include craft_800weather-img.yaml
+  image: !include craft_800/weather-img.yaml
   setting: !include craft_800/setting-800.yaml
   # Sensors  
   naver: !include craft_800/naver-800.yaml
@@ -308,6 +318,7 @@ select:
     id: radio_select
     name: "Radio Channel"
     options:
+    # you can change the channels with automation
       - KBS COOL
       - ITV
       - MBC FM4U
@@ -334,7 +345,7 @@ select:
                 action: media_player.play_media
                 data: 
                   entity_id: $media_player
-                  media_content_id: $kbscool
+                  media_content_id: $kbscool    #change your substitutions or media address
                   media_content_type: music
             - lvgl.label.update:
                 id: frequency_text
