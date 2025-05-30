@@ -1,5 +1,5 @@
 sensor:            
-#미디어 센서
+#Media Player Volume
   - platform: homeassistant
     entity_id: $media_player    
     attribute: volume_level
@@ -16,7 +16,7 @@ sensor:
 
 
 binary_sensor:
-#미디어 뮤트 센서
+#Media Player Mute
   - platform: homeassistant
     entity_id: $media_player    
     attribute: is_volume_muted
