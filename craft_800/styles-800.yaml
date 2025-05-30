@@ -64,14 +64,7 @@ lvgl:
       border_color: 0
       radius: 20
       pad_all: 0
-    - id: security_card
-      text_color: 0xD5D5D5
-      bg_color: 0x222222
-      bg_opa: COVER
-      pad_all: 15
-      radius: 20
-      outline_width: 1
-      border_width: 0      
+  
     - id: meter_style
       text_color: 0xD5D5D5
       bg_color: 0x222222
@@ -79,7 +72,6 @@ lvgl:
       radius: 10
       outline_width: 0
       border_width: 0
-      #border_opa:
       pad_all: 0
     - id: button_menu
       text_color: 0xffffff
@@ -107,17 +99,6 @@ lvgl:
       text_align: CENTER
     - id: menu_button
       radius: 75
-      bg_color: 0x2F8CD8
-      bg_grad_color: 0x0460BD
-      bg_grad_dir: VER
-      border_width: 5
-      border_color: 0x1e84eb
-      border_opa: 50%
-      outline_width: 1
-    - id: blind_button_style
-      radius: 40
-      text_font: regular_25
-      text_align: CENTER
       bg_color: 0x2F8CD8
       bg_grad_color: 0x0460BD
       bg_grad_dir: VER
