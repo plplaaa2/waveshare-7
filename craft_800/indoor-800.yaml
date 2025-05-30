@@ -1,5 +1,5 @@
 sensor:
-# 실내 센서
+# temperature
   - platform: homeassistant
     entity_id: $temperature
     #name: '${name} Temperature'
@@ -16,7 +16,7 @@ sensor:
           text:
             format: "%.1f°c"
             args: [ 'x' ]
-
+#humidity
   - platform: homeassistant
     entity_id: $humidity
     #name: '${name} humidity'
@@ -32,7 +32,7 @@ sensor:
           text:
             format: "%.0f%%"
             args: [ 'x' ]
-#homeassistant
+#pm2.5
   - platform: homeassistant
     entity_id: $pm2_5
     id: pm2_5
@@ -45,7 +45,7 @@ sensor:
           text:
             format: " %.0f"
             args: [ 'x' ]
-
+#tvoc
   - platform: homeassistant
     entity_id: $tvoc
     id: tvoc_value
@@ -58,7 +58,7 @@ sensor:
           text:
             format: " %.0f"
             args: [ 'x' ]
-
+#co2
   - platform: homeassistant
     entity_id: $co2
     id: mhz19_sensor
