@@ -1,5 +1,6 @@
 number:
-# dispaly setting  
+# dispaly setting 
+# time for return to weather card
   - platform: lvgl
     widget: return_spin
     name: "${name} Screen Return Time"    
@@ -7,7 +8,7 @@ number:
     unit_of_measurement: "s"
     restore_value: true
     mode: box
-
+# time for turn off the lcd 
   - platform: lvgl
     widget: idle_spin
     name: "${name} LCD Screen Timeout"    
@@ -35,7 +36,7 @@ number:
         - light.turn_on: 
             id: backlight
             brightness: !lambda return x / 100;
-    
+# Presece for turn on/off the display
 binary_sensor:
   - platform: homeassistant
     entity_id: $presence
@@ -44,11 +45,8 @@ binary_sensor:
       - light.turn_on: backlight
     on_release: 
       - light.turn_off: backlight
-
+# lux sensor for auto brightness
 sensor:
   - platform: homeassistant
     entity_id: $illuminance
     id: lux_sensor  
-
- 
-
