@@ -1,11 +1,11 @@
 text_sensor:
-#네이버 날씨
+#Weather icon
   - platform: homeassistant
     entity_id: weather.naver_weather_1
     id: naver_weather_1
-    on_value:
+    on_value:    
       - script.execute: weather_img
-
+#Weather state
   - platform: homeassistant
     entity_id: sensor.naver_weather_nowweather_1
     id: naver_weather_nowweather_1
@@ -17,10 +17,11 @@ text_sensor:
               format: "%s"
               args: [ x.c_str() ]
 
+#Weather windbearing
   - platform: homeassistant
     entity_id: sensor.naver_weather_windbearing_1
     id: naver_weather_windbearing_1
-
+#Weather rainy start time
   - platform: homeassistant
     entity_id: sensor.naver_weather_rainystarttmr_1
     id: naver_weather_rainystarttmr_1
@@ -37,11 +38,11 @@ text_sensor:
                   args: [ x.c_str(), id(naver_weather_rainfall_1).state.c_str() ]
           else:
             - lvgl.widget.hide: home_weather_rainystarttmr
-
+#weather rainfall
   - platform: homeassistant
     entity_id: sensor.naver_weather_rainfall_1
     id: naver_weather_rainfall_1
-    
+#weather pm 10    
   - platform: homeassistant
     entity_id: sensor.naver_weather_finedustgrade_1
     id: naver_weather_finedustgrade_1    
@@ -74,7 +75,7 @@ text_sensor:
             - lvgl.label.update:
                 id: home_weather_pm10
                 text: "#FF0000 Too Bad#"
-                
+#weather pm 2.5 
   - platform: homeassistant
     entity_id: sensor.naver_weather_ultrafinedustgrade_1
     id: naver_weather_ultrafinedustgrade_1    
@@ -107,7 +108,7 @@ text_sensor:
             - lvgl.label.update:
                 id: home_weather_pm25
                 text: "#FF0000 Too Bad#"
-    
+#weather Ozone
   - platform: homeassistant
     entity_id: sensor.naver_weather_ozongrade_1
     id: naver_weather_ozongrade_1    
@@ -141,7 +142,7 @@ text_sensor:
                 id: home_weather_ozongrade
                 text: "#FF0000 Too Bad#"
 
-
+#weather UV
   - platform: homeassistant
     entity_id: sensor.naver_weather_todayuvgrade_1
     id: naver_weather_todayuvgrade_1   
@@ -176,8 +177,8 @@ text_sensor:
                 text: "#FF0000 Too Bad#"
 
 sensor:
-#HA Sensors
 # Naver Weather
+# Now temparature, For convenience, the perceived temperature is displayed.
   - platform: homeassistant
     entity_id: sensor.naver_weather_todayfeeltemp_1
     id: naver_weather_todayfeeltemp_1
@@ -187,12 +188,12 @@ sensor:
           text:
             format: "%.1f°"
             args: [ 'x' ]
-
+#Today min temparature
   - platform: homeassistant
     entity_id: sensor.naver_weather_todaymintemp_1
     id: naver_weather_todaymintemp_1
     accuracy_decimals: 1
-    
+#Today max temparature    
   - platform: homeassistant
     entity_id: sensor.naver_weather_todaymaxtemp_1
     id: naver_weather_todaymaxtemp_1
@@ -213,11 +214,12 @@ sensor:
           text: 
             format: "#47ACF5 HUM# %.0f%% #02D109 %s# %.1f m/s"
             args: [ 'x', 'id(naver_weather_windbearing_1).state.c_str()', 'id(naver_weather_windspeed_1).state']
-   
+#Weather windspeed
   - platform: homeassistant
     entity_id: sensor.naver_weather_windspeed_1
     id: naver_weather_windspeed_1
-    
+
+# weather icon change script, The values of each weather component may vary, so localization is necessary.
 script:
   - id: weather_img
     then:
