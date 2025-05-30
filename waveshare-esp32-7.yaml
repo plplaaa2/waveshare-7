@@ -18,8 +18,8 @@ substitutions:
   pm2_5: your_sensor_entity
   tvoc: your_sensor_entity
   co2: your_sensor_entity
-  illuminance: your_sensor_entity
-  presence: your_sensor_entity
+  illuminance: your_sensor_entity  #This entity automatically adjusts the screen brightness.
+  presence: your_sensor_entity   #This entity is used to turn the screen on and off
 # energy entities:
   energy_meter: your_sensor_entity
   daily_meter: your_sensor_entity
