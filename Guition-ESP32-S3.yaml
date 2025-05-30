@@ -7,7 +7,9 @@ substitutions:
   latitude: "37"    
   longitude: "126"   
   font: gfonts://Roboto
-
+  mdi: fonts/materialdesignicons-webfont.ttf 
+  # http://materialdesignicons.com/cdn/7.4.47/ 
+  
 # Device entities:
   climate: your_device_entity
   media_player: your_device_entity
