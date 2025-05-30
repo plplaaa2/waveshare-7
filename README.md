@@ -51,9 +51,8 @@ substitutions:
   latitude: "37"    
   longitude: "126"   
   font: gfonts://Roboto
-  mdi: 
-  #mdi icon
-  #http://materialdesignicons.com/cdn/7.4.47/
+  mdi: fonts/materialdesignicons-webfont.ttf 
+  # http://materialdesignicons.com/cdn/7.4.47/ 
 
 # Device entities:
   climate: your_device_entity
