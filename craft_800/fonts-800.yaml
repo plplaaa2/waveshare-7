@@ -6,7 +6,7 @@ font:
     bpp: 4
     glyphs: ${characters}
     extras:
-      - file: 'fonts/materialdesignicons-webfont.ttf' # http://materialdesignicons.com/cdn/7.4.47/ 
+      - file: '$mdi'
         glyphs: [
           "\U000F054A", # mdi:umbrella
           "\U000F17FF", # mdi:sun-wireless-outline
@@ -23,7 +23,7 @@ font:
     bpp: 4
     glyphs: ${characters}
     extras:
-      - file: 'fonts/materialdesignicons-webfont.ttf' # http://materialdesignicons.com/cdn/7.4.47/ 
+      - file: '$mdi'
         glyphs: [
           "\U000F1A79",  # mdi:sun-snowflake-variant
           "\U000F0717",  # mdi:snowflake
@@ -42,7 +42,7 @@ font:
     bpp: 4
     glyphs: ${characters}     
     extras:
-      - file: 'fonts/materialdesignicons-webfont.ttf' # http://materialdesignicons.com/cdn/7.4.47/ 
+      - file: '$mdi'
         glyphs: [
           "\U000F0F54",  # mdi:air-conditioner
           "\U000F0F92",  # mdi:water-boiler
@@ -71,7 +71,7 @@ font:
     bpp: 4
     glyphs: ${characters}
     extras:
-      - file: 'fonts/materialdesignicons-webfont.ttf' # http://materialdesignicons.com/cdn/7.4.47/ 
+      - file: '$mdi'
         glyphs: [
           "\U000F1A79",  # mdi:sun-snowflake-variant
           "\U000F0717",  # mdi:snowflake
@@ -86,7 +86,7 @@ font:
     bpp: 4    
     glyphs: ${characters}
     extras:
-      - file: 'fonts/materialdesignicons-webfont.ttf' # http://materialdesignicons.com/cdn/7.4.47/ 
+      - file: '$mdi'
         glyphs: [
           "\U000F054A" # mdi:umbrella
           ]
@@ -102,7 +102,7 @@ font:
     bpp: 4
     glyphs: ${characters}
     extras:
-      - file: 'fonts/materialdesignicons-webfont.ttf' # http://materialdesignicons.com/cdn/7.4.47/ 
+      - file: '$mdi'
         glyphs: [
           "\U000F05A9", # mdi:wifi
           "\U000F16C5", # mdi:wifi-remove
@@ -113,7 +113,7 @@ font:
           "\U000F1A73", # mdi:solar-power-variant
           "\U000F192C"  # mdi:transmission-tower-export
           ]  
-  - file: "fonts/materialdesignicons-webfont.ttf"
+  - file: "$mdi"
     id: icon_font_60
     size: 60
     bpp: 4
@@ -123,7 +123,7 @@ font:
           "\U000F11DB", # mdi:window-closed-variant
           "\U000F11DC" # mdi:window-open-variant
           ]  
-  - file: "fonts/materialdesignicons-webfont.ttf"
+  - file: "$mdi"
     id: icon_font_90
     size: 90
     bpp: 4
@@ -134,7 +134,7 @@ font:
           "\U000F11DC" # mdi:window-open-variant
           ]  
           
-  - file: "fonts/materialdesignicons-webfont.ttf"
+  - file: "$mdi"
     id: icon_font_200
     size: 200
     bpp: 4
