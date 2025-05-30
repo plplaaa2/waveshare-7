@@ -6,6 +6,8 @@ This is not for everyone, it's optimized for personal use, but a source I share 
 
 I don't know any programming languages, and I made this as a hobby.
 
+If someone asks why I have two, it's because I got frustrated with the touch issue on the Waveshare 7' product.
+
 # waveshare ESP32 S3 N8R8 LCD 7 LCD Brightness Wire
 
 it is necessary to adjust the backlight brightness, you can be adjusted by connecting the pin below and the remaining GPIO pin(ex:GPIO6) of ESP32 module.
