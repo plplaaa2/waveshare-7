@@ -155,7 +155,7 @@ packages:
   image: !include craft_800/weather-img.yaml
   setting: !include craft_800/setting-800.yaml
   # Sensors  
-  naver: !include craft_800/naver-800.yaml
+  weather: !include craft_800/weather-800.yaml
   indoor: !include craft_800/indoor-800.yaml  
   energy: !include craft_800/energy-800.yaml
   # Devices
