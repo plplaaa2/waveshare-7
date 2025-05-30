@@ -318,6 +318,7 @@ select:
     id: radio_select
     name: "Radio Channel"
     options:
+    # you can change the channels with automation
       - KBS COOL
       - ITV
       - MBC FM4U
@@ -344,7 +345,7 @@ select:
                 action: media_player.play_media
                 data: 
                   entity_id: $media_player
-                  media_content_id: $kbscool
+                  media_content_id: $kbscool    #change your substitutions or media address
                   media_content_type: music
             - lvgl.label.update:
                 id: frequency_text
