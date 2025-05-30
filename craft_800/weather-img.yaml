@@ -1,5 +1,5 @@
 image:
-#날씨 아이콘
+#weather icon
   rgb565:
   - file: "weather/sunny.png"
     id: sunny    
