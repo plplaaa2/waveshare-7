@@ -1216,7 +1216,7 @@ lvgl:
                       width: 130
                       height: 60                  
                       id: all_open
-                      styles: blind_button_style
+                      styles: menu_button
                       widgets:
                         - label:
                             text: "\U000F084E"
@@ -1236,7 +1236,7 @@ lvgl:
                       width: 130
                       height: 60
                       id: all_stop
-                      styles: blind_button_style
+                      styles: menu_button
                       widgets:
                         - label:
                             text: "\U000F04DB"
@@ -1255,7 +1255,7 @@ lvgl:
                       width: 130
                       height: 60
                       id: all_close
-                      styles: blind_button_style
+                      styles: menu_button
                       widgets:
                         - label:
                             text: "\U000F084C"
