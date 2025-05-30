@@ -1,5 +1,5 @@
 sensor:
-# 블라인드 센서
+# Current Position
   - platform: homeassistant
     entity_id: $blind 
     attribute: current_position
@@ -15,7 +15,7 @@ sensor:
           value: !lambda 'return x;'
                 
 text_sensor:
-# 블라인드 텍스트 센서
+# Current State
   - platform: homeassistant
     entity_id: $blind
     id: blind
