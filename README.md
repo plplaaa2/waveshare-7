@@ -1,24 +1,33 @@
-# waveshare ESP32 S3 N8R8 LCD 7 or Guition ESP32 8048S070
+# Dashboard for waveshare ESP32 S3 N8R8 LCD 7 or Guition ESP32 8048S070 
 
 ![image](https://github.com/user-attachments/assets/46babe10-48d7-4d5e-8e67-0895957cafc8)
 
-
 This is not for everyone, it's optimized for personal use, but a source I share to refer to.
 
-# waveshare ESP32 S3 N8R8 LCD 7 LCD Brightness Wire
-And if it is necessary to adjust the backlight brightness, it can be adjusted by connecting the pin below and the remaining GPIO pin(ex:GPIO6) of ESP32 module.
+I don't know any programming languages, and I made this as a hobby.
 
-![image](https://github.com/user-attachments/assets/feae9bb1-c0bd-4d50-bc0a-b0f707b64af7)
+# waveshare ESP32 S3 N8R8 LCD 7 LCD Brightness Wire
+
+it is necessary to adjust the backlight brightness, you can be adjusted by connecting the pin below and the remaining GPIO pin(ex:GPIO6) of ESP32 module.
+
+![image](https://github.com/user-attachments/assets/2d22f57b-f7c4-4f2f-8bdc-42b48757c781)
+
+I'm connecting this using GPIO6
 
 # Sample Video
 
 [https://www.youtube.com/shorts/WfNRwrhKC6Q?feature=share](https://www.youtube.com/shorts/sdezhiXci4w)
 
+it's just sample. This is optimized for my home, and the public version is a bit simpler.
+
 The code used for the device in this video is personalized and cannot be used by other users. The cool weather page and other menus are components that are only available in Korea and my Homea Assistant. If you want to use this, you need to be able to understand and modify ESPhome LVGL. If you can't, no matter how much you receive the yaml file, you can't use it.
 
 If that is possible, you can modify the yaml file I released below to suit your country and your home assistant.
 
-# Entities
+# Custom Entities
+
+This YAML configuration needs key devices like climate, media player, blinds, energy meter, air quality sensors, illuminance, and presence sensor.
+
 ```
 substitutions:
 # Device setting  
