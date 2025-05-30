@@ -1,6 +1,8 @@
 
 The image file is copyrighted, so you need to obtain it on your own.
 
+recommand : https://www.iconfinder.com/search/icons?family=flat-241
+
 image list
   - file: "weather/sunny.png"
   - file: "weather/cloudy.png"
