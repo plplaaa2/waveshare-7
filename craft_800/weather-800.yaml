@@ -163,14 +163,14 @@ text_sensor:
                 text: "#00FF00 Normal#"
       - if:
           condition:
-            - lambda: 'return id(naver_weather_todayuvgrade_1).state == "나쁨";'
+            - lambda: 'return id(naver_weather_todayuvgrade_1).state == "높음";'
           then:
             - lvgl.label.update:
                 id: home_weather_todayuvgrade
                 text: "#FFA500 Bad#"
       - if:
           condition:
-            - lambda: 'return id(naver_weather_todayuvgrade_1).state == "매우나쁨";'
+            - lambda: 'return id(naver_weather_todayuvgrade_1).state == "매우높음";'
           then:
             - lvgl.label.update:
                 id: home_weather_todayuvgrade
