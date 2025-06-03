@@ -245,34 +245,33 @@ script:
           condition:
             - lambda: 'return id(naver_weather_1).state == "partlycloudy";'
           then:
-            - lvgl.image.update:
-                id: home_weather_icon
-                src: partlycloud
+            if:
+              condition:
+                - sun.is_above_horizon:
+              then:
+                - lvgl.image.update:
+                    id: home_weather_icon
+                    src: partlycloud
+              else:
+                - lvgl.image.update:
+                    id: home_weather_icon
+                    src: nightpartlycloud
+
       - if:
           condition:
-            and:              
-              - lambda: 'return id(naver_weather_1).state == "partlycloudy";'
-              - sun.is_below_horizon:
-          then:
-            - lvgl.image.update:
-                id: home_weather_icon
-                src: nightpartlycloud
-      - if:
-          condition:            
             - lambda: 'return id(naver_weather_1).state == "cloudy";'
-            - sun.is_below_horizon:
           then:
-            - lvgl.image.update:
-                id: home_weather_icon
-                src: scloud
-      - if:
-          condition:            
-            and:              
-              - lambda: 'return id(naver_weather_1).state == "cloudy";'
-          then:
-            - lvgl.image.update:
-                id: home_weather_icon
-                src: cloudy
+            if:
+              condition:
+                - sun.is_above_horizon:
+              then:
+                - lvgl.image.update:
+                    id: home_weather_icon
+                    src: scloud
+              else:
+                - lvgl.image.update:
+                    id: home_weather_icon
+                    src: cloudy
       - if:
           condition:
             - lambda: 'return id(naver_weather_1).state == "rainy";'
@@ -311,4 +310,4 @@ script:
           then:
             - lvgl.image.update:
                 id: home_weather_icon
-                src: lightning       
+                src: lightning      
