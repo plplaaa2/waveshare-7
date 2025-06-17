@@ -559,7 +559,7 @@ lvgl:
           condition:
             - light.is_on: backlight
           then:
-            - script.execute: show_weather
+            - script.execute: hide_all_card
     - timeout: !lambda return id(screen_timeout).state * 1000;
       then:
         if:
